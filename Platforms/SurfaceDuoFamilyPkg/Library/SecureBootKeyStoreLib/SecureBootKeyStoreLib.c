@@ -24,7 +24,7 @@ UINT8                     gSecureBootPayloadCount = 0;
 
 UINT8 mSecureBootPayloadCount = PLATFORM_SECURE_BOOT_KEY_COUNT;
 SECURE_BOOT_PAYLOAD_INFO mSecureBootPayload[PLATFORM_SECURE_BOOT_KEY_COUNT] = {{
-    .SecureBootKeyName = L"Microsoft Plus 3rd Party Plus Windows On Andromeda",
+    .SecureBootKeyName = L"Windows On Cepheus",
     .PkPtr             = NULL,
     .PkSize            = 0,
     .KekPtr            = NULL,
@@ -85,7 +85,7 @@ SecureBootKeyStoreLibConstructor (
   UINTN               DataSize;
   EFI_SIGNATURE_LIST *SigListBuffer = NULL;
 
-  // Windows On Andromeda Root Platform Key
+  // Windows On Cepheus Root Platform Key
   UINT8 *mDevelopmentPlatformKeyCertificate     = NULL;
   UINTN  mDevelopmentPlatformKeyCertificateSize = 0;
   UINT8 *mKekDefault                            = NULL;
