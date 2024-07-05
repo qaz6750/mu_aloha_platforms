@@ -143,9 +143,13 @@ TryWritePlatformSiPolicy(EFI_HANDLE SfsHandle)
     // SecureBoot is off. Delete it.
     if (!IsSecureBootOn()) {
       PayloadFileProtocol->Delete(PayloadFileProtocol);
+      Status = EFI_SUCCESS;
+      goto exit;
     }
-    // Migration transition to woa msmnile secure boot certificate.
-    PayloadFileProtocol->Delete(PayloadFileProtocol);
+    else if (IsSecureBootOn()){
+      // Migration transition to woa msmnile secure boot certificate.
+      PayloadFileProtocol->Delete(PayloadFileProtocol);
+    }
   }
 
   Status = FileProtocol->Open(
