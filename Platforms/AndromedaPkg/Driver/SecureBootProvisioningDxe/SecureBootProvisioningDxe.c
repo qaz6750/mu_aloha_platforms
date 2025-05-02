@@ -26,10 +26,7 @@
 #include <Library/MuSecureBootKeySelectorLib.h>
 
 #include <Guid/GlobalVariable.h>
-
-#include <Guid/FileSystemInfo.h>
 #include <Guid/FileInfo.h>
-#include <Guid/FileSystemVolumeLabelInfo.h>
 
 //
 // Global variables.
