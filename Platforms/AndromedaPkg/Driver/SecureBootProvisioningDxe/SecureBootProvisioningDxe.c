@@ -185,6 +185,9 @@ TryWritePlatformSiPolicy(EFI_HANDLE SfsHandle)
       if (CompareMem(SiPolicyEfiSfsHash, mSiPolicyDefaultHash, SHA256_DIGEST_SIZE) == 0) {
         Status = SetSecureBootConfig(0);
         goto exit;
+      } else {
+        // If an update is required, then delete the original SiPolicy first.
+        PayloadFileProtocol->Delete(PayloadFileProtocol);
       }
     }
     // File does not exist, if SB is off, do not add the file.
