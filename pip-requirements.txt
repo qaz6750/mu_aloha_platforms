@@ -21,3 +21,6 @@ pywin32==311; sys_platform == 'win32'
 setuptools==80.9.0
 poetry==2.1.4
 fdt==0.3.3
+
+# Optional Levenshtein, used by build_uefi.py
+levenshtein
