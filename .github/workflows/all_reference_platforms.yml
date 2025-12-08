@@ -75,7 +75,6 @@ jobs:
             { platform: "KonaPkg",    codename: "kona",    chipname: "sm8250" },
             { platform: "MooreaPkg",  codename: "moorea",  chipname: "sm7150" },
             { platform: "WarlockPkg", codename: "warlock", chipname: "sdm670" },
-            { platform: "NapaliPkg",  codename: "napali",  chipname: "sdm845" },
             { platform: "IstariPkg",  codename: "istari",  chipname: "msm8996"},
             { platform: "NazgulPkg",  codename: "nazgul",  chipname: "msm8998"},
             { platform: "WaipioPkg",  codename: "waipio",  chipname: "sm8450" },
