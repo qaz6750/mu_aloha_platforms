@@ -347,6 +347,14 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 | Xiaomi K60 Pro                       | xiaomi-socrates        | ❌              | None                                               |
 
 
+### Snapdragon 8 Elite Gen 5 (*SM8850*)
+
+#### Oneplus Devices
+| Device                               | Target name            | DSDT Support    | Contributors                                       |
+|--------------------------------------|------------------------|-----------------|----------------------------------------------------|
+| Oneplus 15                           | oneplus-plk110         | ❌              | None                                               |
+
+
 ## Acknowledgements
 - Gustave Monce and his [mu_andromeda_platforms](https://github.com/WOA-Project/mu_andromeda_platforms)
 - [EFIDroid Project](http://efidroid.org)
