@@ -52,6 +52,10 @@
   MemoryInitPeiLib
   PlatformPrePiLib
   MemoryMapHelperLib
+## Patch: call lk scheduler related function.
+  ConfigurationMapHelperLib
+  SecProtocolFinderLib
+##
 
 [Ppis]
   gArmMpCoreInfoPpiGuid

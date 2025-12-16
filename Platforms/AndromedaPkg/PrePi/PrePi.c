@@ -24,6 +24,11 @@
 
 #include <Library/MemoryMapHelperLib.h>
 
+////////////////////////////////////////////
+// Patch: call lk scheduler related function.
+#include <Library/ConfigurationMapHelperLib.h>
+#include <Library/SecProtocolFinderLib.h>
+////////////////////////////////////////////
 #include <Guid/DxeMemoryProtectionSettings.h>
 #include <Guid/MmMemoryProtectionSettings.h>
 
@@ -33,6 +38,12 @@
 UINT64  mSystemMemoryEnd = FixedPcdGet64 (PcdSystemMemoryBase) +
                            FixedPcdGet64 (PcdSystemMemorySize) - 1;
 
+////////////////////////////////////////////
+// Patch: call lk scheduler related function.
+extern VOID _ModuleEntryPoint(VOID);
+VOID PeiContinueBoot(VOID* ARGS);
+VOID* PeiServiceTablePtr = NULL;
+////////////////////////////////////////////
 EFI_STATUS
 GetPlatformPpi (
   IN  EFI_GUID  *PpiGuid,
@@ -71,6 +82,11 @@ PrePiMain (
   UINTN                       CharCount;
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
+/////////////////////////////////////////////
+// Patch: call lk scheduler related function.
+  STATIC BOOLEAN              SchedulerBooted      = FALSE;
+  UINT32                      EnableMultiThreading = 0;
+/////////////////////////////////////////////
 
   DXE_MEMORY_PROTECTION_SETTINGS DxeSettings;
   MM_MEMORY_PROTECTION_SETTINGS  MmSettings;
@@ -123,7 +139,9 @@ PrePiMain (
                 __TIME__,
                 __DATE__
                 );
+
   SerialPortWrite ((UINT8 *)Buffer, CharCount);
+
 
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
@@ -192,7 +210,32 @@ PrePiMain (
 
   // SEC phase needs to run library constructors by hand.
   ProcessLibraryConstructorList ();
+/////////////////////////////////////////////
+// Patch: call lk scheduler related function.
+//
+  // Try start scheduler
+  Status = LocateConfigurationMapUINT32ByName("EnableMultiThreading", &EnableMultiThreading);
+  if (!EFI_ERROR(Status) && EnableMultiThreading && !SchedulerBooted){
+    // Start up scheduler
+    SchedulerBooted = TRUE;
+    // Backup Service Table
+    PeiServiceTablePtr = (VOID *)ArmReadTpidrurw();
+    StartUpScheduler(PeiContinueBoot, &_ModuleEntryPoint);
+  }
 
+  PeiContinueBoot(NULL);
+}
+
+VOID
+PeiContinueBoot(VOID* ARGS)
+{
+  EFI_STATUS Status;
+
+  // Restore Service Table if needed
+  if (PeiServiceTablePtr != NULL)
+    ArmWriteTpidrurw((UINTN)PeiServiceTablePtr);
+//
+/////////////////////////////////////////////
   // Assume the FV that contains the SEC (our code) also contains a compressed FV.
   Status = DecompressFirstFv ();
   ASSERT_EFI_ERROR (Status);
@@ -250,3 +293,14 @@ CEntryPoint ()
   // DXE Core should always load and never return
   ASSERT (FALSE);
 }
+////////////////////////////////////////////
+// Patch: call lk scheduler related function.
+VOID
+SecondaryCoreCEntry (
+  IN UINTN CpuIdx
+  )
+{
+  // Jump to the secondary entry we found in XBL Sec
+  BootSecondaryCpu (CpuIdx);
+}
+////////////////////////////////////////////
