@@ -22,11 +22,12 @@
   PLATFORM_GUID                  = b6325ac2-9f3f-4b1d-b129-ac7b35ddde62
   PLATFORM_VERSION               = 0.1
   DSC_SPECIFICATION              = 0x00010005
-  OUTPUT_DIRECTORY               = Build/MooreaPkg
+  OUTPUT_DIRECTORY               = Build/$(PLATFORM_NAME)Pkg
   SUPPORTED_ARCHITECTURES        = AARCH64
   BUILD_TARGETS                  = DEBUG|RELEASE
   SKUID_IDENTIFIER               = DEFAULT
-  FLASH_DEFINITION               = MooreaPkg/Moorea.fdf
+  PACKAGE_NAME                   = $(PLATFORM_NAME)Pkg
+  FLASH_DEFINITION               = $(PACKAGE_NAME)/$(PLATFORM_NAME).fdf
   SECURE_BOOT                    = 1
   USE_PHYSICAL_TIMER             = 1
 
