@@ -16,7 +16,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"EnableACPIFallback", 0x0},
     {"EnableDisplayImageFv", 0x0},
     {"EnableDisplayThread", 1},
-    {"EnableMultiThreading", 1},
+    {"EnableMultiThreading", 0},
     {"EnableOEMSetupAppInRetail", 0x0},
     {"EnablePXE", 0x0},
     {"EnableSDHCSwitch", 0x1},

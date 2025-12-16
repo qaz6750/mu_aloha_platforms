@@ -10,7 +10,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"EnableDisplayImageFv", 0x0},
     {"EnableDisplayThread", 0x1},
     {"EnableLogFsSyncInRetail", 0x0},
-    {"EnableMultiThreading", 1},
+    {"EnableMultiThreading", 0},
     {"EnableSDHCSwitch", 0x1},
     {"EnableShell", 0x1},
     {"EnableUefiSecAppDebugLogDump", 0x0},

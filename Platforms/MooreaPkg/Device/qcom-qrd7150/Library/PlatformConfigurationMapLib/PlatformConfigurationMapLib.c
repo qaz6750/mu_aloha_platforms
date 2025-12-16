@@ -28,7 +28,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"DetectRetailUserAttentionHotkey", 0x00},
     {"DetectRetailUserAttentionHotkeyCode", 0x17},
     {"EnableOEMSetupAppInRetail", 0x0},
-    {"EnableMultiThreading", 1},
+    {"EnableMultiThreading", 0},
     {"MaxCoreCnt", 8},
     {"EarlyInitCoreCnt", 1},
     {"EnableDisplayThread", 0},

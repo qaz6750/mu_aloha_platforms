@@ -28,7 +28,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"SecurityFlag", 0x81C4},
     {"EnableLogFsSyncInRetail", 0x0},
     {"ShmBridgememSize", 0xA00000},
-    {"EnableMultiThreading", 1},
+    {"EnableMultiThreading", 0},
     {"MaxCoreCnt", 8},
     {"EarlyInitCoreCnt", 1},
     {"EnableUefiSecAppDebugLogDump", 0x0},
