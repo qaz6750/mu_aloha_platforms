@@ -23,5 +23,7 @@
 
 [LibraryClasses]
   BaseLib
-  MemoryMapHelperLib
   BaseMemoryLib
+  MemoryMapHelperLib
+  ConfigurationMapHelperLib
+  CacheMaintenanceLib

@@ -1,3 +1,9 @@
+/** @file
+    Copyright (c) 2024-2026. DuoWoA Authors. All rights reserved.
+    Copyright (c) 2024-2026. Project Aloha Authors. All rights reserved.
+
+    SPDX-License-Identifier: MIT
+*/
 #ifndef _QC_SEC_PROTOCOLS_LOCATOR_SEC_LIB_H_
 #define _QC_SEC_PROTOCOLS_LOCATOR_SEC_LIB_H_
 #include <IndustryStandard/PeImage.h>
@@ -6,23 +12,27 @@
 
 /* ADRP Instruction */
 typedef struct arm64_adrp {
-  UINT32 Val;
-  // instruction instructure
+  // extra data
+  UINT32 Val;   // value in union
+  UINT32 imm;
+  UINT64 pc;
+  UINT64 RdAfterExecution;
+  // instruction bit field data
   UINT8  Rd;
   UINT32 immhi;
   UINT8  op2;
   UINT8  immlo;
   UINT8  op1;
-  // extra data
-  UINT32 imm;
-  UINT64 pc;
-  UINT64 RdAfterExecution;
 } Arm64Adrp;
 
 /* ADD Instruction */
 typedef struct arm64_add {
-  UINT32 Val;
-  // instruction instructure
+  // extra data
+  UINT32 Val;   // value in union
+  UINT32 imm;
+  UINT64 pc;
+  UINT64 RdAfterExecution;
+  // instruction bit field data
   UINT8  Rd;
   UINT8  Rn;
   UINT16 imm12;
@@ -31,11 +41,18 @@ typedef struct arm64_add {
   UINT8  s;
   UINT8  op1;
   UINT8  sf;
-  // extra data
-  UINT32 imm;
-  UINT64 pc;
-  UINT64 RdAfterExecution;
 } Arm64Add;
+
+typedef struct arm64_bl {
+  // extra data
+  UINT32 Val;   // value in union
+  INT32 imm;
+  UINT64 pc;
+  UINT64 jumpAddr;
+  // instruction bit field data
+  UINT32 imm26;
+  UINT8 op;
+} Arm64Bl;
 
 /* MASKs to get args value in adrp */
 #define ADRP_RD(Ins) ((Ins) & 0x1F)
@@ -54,10 +71,15 @@ typedef struct arm64_add {
 #define ADD_OP1(Ins) (((Ins) >> 30) & 0x1)
 #define ADD_SF(Ins) (((Ins) >> 31) & 0x1)
 
+/* MASKs to get args value in ADD */
+#define BL_IMM26(Ins) ((Ins) & 0x3FFFFFF)
+#define BL_OP(Ins) (((Ins) >> 26) & 0x3f)
+
 /* A Union for uni operations of instructions */
 typedef union Ins {
   Arm64Adrp adrp;
   Arm64Add  add;
+  Arm64Bl   bl;
   UINT32    val;
 } INST;
 
@@ -71,5 +93,32 @@ typedef struct {
   UINTN teSize;
   UINTN fileSize;
 } TE_INFO_STRUCT;
+
+// LK Functions in Sec
+typedef VOID (*LK_CONTINUE_BOOT)(VOID* ARG);
+typedef VOID (*LK_AUX_CORE_ENTRY)(UINT64 CoreIdx);
+typedef VOID (*LK_GIC_CONFIG)(VOID);
+typedef VOID (*LK_SHUTDOWN_INIT1)(UINT64 MaxCoreCnt);
+typedef VOID (*LK_SHUTDOWN_INIT2)(VOID);
+typedef VOID (*LK_SCHEDULER_INIT) (
+  LK_CONTINUE_BOOT PeiContinueBoot,
+  UINT64 zero,
+  UINT64 SchedHeapBase,
+  UINT64 SchedHeapSize,
+  LK_AUX_CORE_ENTRY AuxCoresEntryPoint,
+  UINT32 MaxCoreCnt,
+  UINT32 EarlyInitCoreCnt
+);
+typedef VOID (*LK_AUX_CORES_ENTRY_POINT)(UINTN CpuIdx);
+
+typedef struct {
+  BOOLEAN Initialized;
+  UINT32 Magic;
+  LK_GIC_CONFIG lk_gic_config;
+  LK_SCHEDULER_INIT lk_init_scheduler;
+  LK_SHUTDOWN_INIT1 lk_init_shutdown1;
+  LK_SHUTDOWN_INIT2 lk_init_shutdown2;
+  LK_AUX_CORES_ENTRY_POINT lk_aux_cores_entry_point;
+} LK_INIT_FUNCTIONS;
 
 #endif /* _QC_SEC_PROTOCOLS_LOCATOR_SEC_LIB_H_ */
