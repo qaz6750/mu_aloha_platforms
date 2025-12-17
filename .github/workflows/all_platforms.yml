@@ -71,6 +71,11 @@ jobs:
         target:
           [
             {
+              platform: "KaanapaliPkg",
+              codename: "kaanapali",
+              chipname: "sm8850"
+            },
+            {
               platform: "KailuaPkg",
               codename: "kailua",
               chipname: "sm8550"
