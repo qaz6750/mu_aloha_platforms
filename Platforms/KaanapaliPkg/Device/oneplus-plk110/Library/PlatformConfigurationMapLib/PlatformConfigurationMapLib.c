@@ -14,7 +14,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"EnableDisplayImageFv", 0x0},
     {"EnableLogFsSyncInRetail", 0x0},
     {"EnableDisplayThread", 0},
-    {"EnableMultiThreading", 1},
+    {"EnableMultiThreading", 0},
     {"EnableMultiCoreFvDecompression", 1},
     {"EnableSDHCSwitch", 0x1},
     {"EnableShell", 0x1},
