@@ -779,13 +779,14 @@ InitProtocolFinder(
   if (NULL != ScheAddr) {
     status =
         find_protocol_scheduler(&CoreTE, &gEfiSchedIntfGuid, &ScheIntrAddr);
-    ASSERT(!EFI_ERROR(status));
 
     if (!ScheIntrAddr) {
       // Try variant 2
       DEBUG((EFI_D_WARN,"try find scheduler variant 2\n"));
       status = find_protocol_scheduler_v2(&CoreTE, &gEfiSchedIntfGuid, &ScheIntrAddr);
     }
+
+    ASSERT(!EFI_ERROR(status));
 
     if (!EFI_ERROR(status)) {
       // Fill caller's address
