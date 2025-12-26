@@ -7,18 +7,18 @@
 
 #include "QcSecProtocolsLocatorSecLib.h"
 #include <Library/BaseLib.h>
+#include <Library/CacheMaintenanceLib.h>
+#include <Library/ConfigurationMapHelperLib.h>
 #include <Library/DebugLib.h>
 #include <Library/MemoryMapHelperLib.h>
-#include <Library/ConfigurationMapHelperLib.h>
 #include <Library/PlatformHobs.h>
 #include <Library/PlatformMemoryMapLib.h>
-#include <Library/CacheMaintenanceLib.h>
 #include <Library/SecProtocolFinderLib.h>
 
 /* Variables */
-STATIC UINTN ScheIntrAddr = 0;
-STATIC UINTN SecDTOpsAddr = 0;
-STATIC LK_INIT_FUNCTIONS LkInitFuncs = {0};
+STATIC UINTN             ScheIntrAddr = 0;
+STATIC UINTN             SecDTOpsAddr = 0;
+STATIC LK_INIT_FUNCTIONS LkInitFuncs  = {0};
 
 /* Funcs */
 /**
@@ -145,11 +145,9 @@ exit:
 STATIC
 EFI_STATUS
 find_data_in_buffer(
-  IN OUT TE_INFO_STRUCT *TEInfo,
-  IN VOID *Data,
-  IN UINTN Size,
-  OUT UINTN *DataInBuffer
-){
+    IN OUT TE_INFO_STRUCT *TEInfo, IN VOID *Data, IN UINTN Size,
+    OUT UINTN *DataInBuffer)
+{
   for (UINTN i = 0; i <= TEInfo->teSize - Size; i++) {
     if (CompareMem(TEInfo->programBuffer + i, Data, Size) == 0) {
       *DataInBuffer = (UINTN)i;
@@ -168,18 +166,15 @@ find_data_in_buffer(
 STATIC
 EFI_STATUS
 find_guid_in_buffer(
-  IN OUT TE_INFO_STRUCT *TEInfo,
-  IN GUID *KeyGuid,
-  OUT UINTN *GuidInBuffer
-){
-    return find_data_in_buffer(TEInfo, KeyGuid, 16, GuidInBuffer);
+    IN OUT TE_INFO_STRUCT *TEInfo, IN GUID *KeyGuid, OUT UINTN *GuidInBuffer)
+{
+  return find_data_in_buffer(TEInfo, KeyGuid, 16, GuidInBuffer);
 }
 
 STATIC
 BOOLEAN
-validate_adrp(
-  IN OUT INST *inst
-){
+validate_adrp(IN OUT INST *inst)
+{
   // Store Values by macros
   inst->adrp.op1   = ADRP_OP1(inst->val);
   inst->adrp.op2   = ADRP_OP2(inst->val);
@@ -191,9 +186,8 @@ validate_adrp(
 
 STATIC
 BOOLEAN
-validate_add(
-  IN OUT INST *inst
-){
+validate_add(IN OUT INST *inst)
+{
   // Store Values by macros
   inst->add.op1   = ADD_OP1(inst->val);
   inst->add.op2   = ADD_OP2(inst->val);
@@ -208,20 +202,46 @@ validate_add(
 
 STATIC
 BOOLEAN
-validate_bl(
-  IN OUT INST *inst
-){
+validate_bl(IN OUT INST *inst)
+{
   inst->bl.imm26 = BL_IMM26(inst->val);
   inst->bl.op    = BL_OP(inst->val);
   return (inst->bl.op == 0b100101);
 }
 
 STATIC
-VOID
-parse_adrp(
-  IN OUT INST *inst,
-  IN UINT32 offset
-){
+BOOLEAN
+validate_ret(IN INST *inst) { return (inst->val == 0xD65F03C0); }
+
+STATIC
+BOOLEAN
+validate_movz(INST *inst)
+{
+  inst->movz.sf    = MOV_SF(inst->val);
+  inst->movz.opc   = MOV_OPC(inst->val);
+  inst->movz.hw    = MOV_HW(inst->val);
+  inst->movz.imm16 = MOV_IMM16(inst->val);
+  inst->movz.Rd    = MOV_RD(inst->val);
+
+  return (inst->movz.opc == 0b10100101);
+}
+
+STATIC
+BOOLEAN
+validate_movk(INST *inst)
+{
+  inst->movk.sf    = MOV_SF(inst->val);
+  inst->movk.opc   = MOV_OPC(inst->val);
+  inst->movk.hw    = MOV_HW(inst->val);
+  inst->movk.imm16 = MOV_IMM16(inst->val);
+  inst->movk.Rd    = MOV_RD(inst->val);
+
+  return (inst->movk.opc == 0b11100101);
+}
+
+STATIC
+VOID parse_adrp(IN OUT INST *inst, IN UINT32 offset)
+{
   // Store immediate number
   inst->adrp.imm = (inst->adrp.immhi << 2 | inst->adrp.immlo) << 12;
   // Store PC and Register(after executing adrp) address
@@ -230,11 +250,8 @@ parse_adrp(
 };
 
 STATIC
-VOID
-parse_bl(
-  IN OUT INST *inst,
-  IN UINT32 offset
-){
+VOID parse_bl(IN OUT INST *inst, IN UINT32 offset)
+{
   // Store immediate number
   inst->bl.imm = (inst->bl.imm26 & (1 << 25))
                      ? (inst->bl.imm26 | (~(0ULL) & 0xfc000000)) << 2
@@ -246,29 +263,33 @@ parse_bl(
 
 STATIC
 UINT64
-offset_to_phy_addr(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINT64 offset
-){
+parse_movz_with_movk(INST *movz_inst, INST *movk_inst)
+{
+  movz_inst->movz.imm = movz_inst->movz.hw * 16;
+  movk_inst->movk.imm = movk_inst->movk.hw * 16;
+  return (movz_inst->movz.imm16 << movz_inst->movz.imm) |
+         (movk_inst->movk.imm16 << movk_inst->movk.imm);
+}
+
+STATIC
+UINT64
+offset_to_phy_addr(IN TE_INFO_STRUCT *Binary, IN UINT64 offset)
+{
   return Binary->teHeader->BaseOfCode + Binary->teHeader->ImageBase + offset;
 }
 
 STATIC
 UINT64
-phy_addr_to_offset(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINT64 PhyAddr
-){
+phy_addr_to_offset(IN TE_INFO_STRUCT *Binary, IN UINT64 PhyAddr)
+{
   return PhyAddr - Binary->teHeader->BaseOfCode - Binary->teHeader->ImageBase;
 }
 
 STATIC
 EFI_STATUS
 find_first_ret_before_offset(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINTN offset,
-  OUT UINTN *PhyAddr
-){
+    IN TE_INFO_STRUCT *Binary, IN UINTN offset, OUT UINTN *PhyAddr)
+{
   if (NULL == Binary || 0 == offset)
     return EFI_INVALID_PARAMETER;
 
@@ -276,7 +297,7 @@ find_first_ret_before_offset(
     INST instruction = {.val = *(UINT32 *)(Binary->programBuffer + offset - 4)};
 
     // Check RET
-    if (instruction.val == 0xD65F03C0) {
+    if (validate_ret(&instruction)) {
       // Got it
       *PhyAddr = offset_to_phy_addr(Binary, offset - 4);
       return EFI_SUCCESS;
@@ -284,19 +305,17 @@ find_first_ret_before_offset(
     offset -= 4;
   }
 
-  DEBUG((DEBUG_WARN, "RET instruction not found before offset 0x%lX\n", offset));
+  DEBUG(
+      (DEBUG_WARN, "RET instruction not found before offset 0x%lX\n", offset));
   *PhyAddr = 0;
   return EFI_NOT_FOUND;
 }
 
-#if 0
 STATIC
 EFI_STATUS
 find_first_bl_before_offset(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINTN offset,
-  OUT UINTN *PhyAddr
-){
+    IN TE_INFO_STRUCT *Binary, IN UINTN offset, OUT UINTN *PhyAddr)
+{
   if (NULL == Binary || 0 == offset)
     return EFI_INVALID_PARAMETER;
 
@@ -315,15 +334,12 @@ find_first_bl_before_offset(
   *PhyAddr = 0;
   return EFI_NOT_FOUND;
 }
-#endif
 
 STATIC
 EFI_STATUS
 find_first_bl_after_offset(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINT64 offset,
-  OUT UINT64 *TargetAddress
-){
+    IN TE_INFO_STRUCT *Binary, IN UINT64 offset, OUT UINT64 *TargetAddress)
+{
   if (NULL == Binary || 0 == offset)
     return EFI_INVALID_PARAMETER;
 
@@ -346,11 +362,9 @@ find_first_bl_after_offset(
 
 STATIC
 EFI_STATUS
-get_bl_target_addr (
-  IN TE_INFO_STRUCT *Binary,
-  IN UINT64 bl_offset,
-  OUT UINT64 *TargetAddress
-){
+get_bl_target_addr(
+    IN TE_INFO_STRUCT *Binary, IN UINT64 bl_offset, OUT UINT64 *TargetAddress)
+{
   if (NULL == Binary || 0 == bl_offset)
     return EFI_INVALID_PARAMETER;
 
@@ -371,10 +385,9 @@ get_bl_target_addr (
 
 STATIC
 EFI_STATUS find_caller_addr_of_func_with_offset(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINT64 target_offset,
-  OUT UINTN *TargetAddress
-){
+    IN TE_INFO_STRUCT *Binary, IN UINT64 target_offset,
+    OUT UINTN *TargetAddress)
+{
   // enumerate all BL instructions
   for (UINT32 offset = 0;
        offset < Binary->fileSize - 8 - sizeof(EFI_TE_IMAGE_HEADER);
@@ -406,13 +419,11 @@ EFI_STATUS find_caller_addr_of_func_with_offset(
 STATIC
 EFI_STATUS
 find_caller_addr_of_func_with_codes(
-  IN TE_INFO_STRUCT *Binary,
-  IN UINT8 *insts_buf,
-  IN UINTN insts_size,
-  OUT UINTN *PhyAddr
-){
-  EFI_STATUS Status = EFI_SUCCESS;
-  UINT64 insts_offset = 0;
+    IN TE_INFO_STRUCT *Binary, IN UINT8 *insts_buf, IN UINTN insts_size,
+    OUT UINTN *PhyAddr)
+{
+  EFI_STATUS Status       = EFI_SUCCESS;
+  UINT64     insts_offset = 0;
 
   if (NULL == Binary || NULL == insts_buf || 0 == insts_size)
     return EFI_INVALID_PARAMETER;
@@ -436,15 +447,13 @@ exit:
 STATIC
 EFI_STATUS
 find_protocol_scheduler(
-  IN TE_INFO_STRUCT *Binary,
-  IN GUID *KeyGuid,
-  OUT UINTN *TargetAddress
-){
+    IN TE_INFO_STRUCT *Binary, IN GUID *KeyGuid, OUT UINTN *TargetAddress)
+{
   // Find Guid Offset
-  UINTN     GuidOffset = 0;
-  EFI_STATUS status      = find_guid_in_buffer(Binary, KeyGuid, &GuidOffset);
+  UINTN      GuidOffset = 0;
+  EFI_STATUS status     = find_guid_in_buffer(Binary, KeyGuid, &GuidOffset);
   if (EFI_ERROR(status)) {
-    DEBUG((DEBUG_WARN, "Schduler guid not found in buffer\n"));
+    DEBUG((DEBUG_WARN, "Scheduler guid not found in buffer\n"));
     return EFI_NOT_FOUND;
   }
 
@@ -496,15 +505,13 @@ find_protocol_scheduler(
 STATIC
 EFI_STATUS
 find_protocol_scheduler_v2(
-  IN TE_INFO_STRUCT *Binary,
-  IN GUID *KeyGuid,
-  OUT UINTN *TargetAddress
-){
+    IN TE_INFO_STRUCT *Binary, IN GUID *KeyGuid, OUT UINTN *TargetAddress)
+{
   // Find Guid Offset
-  UINTN  GuidOffset = 0;
-  EFI_STATUS status = find_guid_in_buffer(Binary, KeyGuid, &GuidOffset);
+  UINTN      GuidOffset = 0;
+  EFI_STATUS status     = find_guid_in_buffer(Binary, KeyGuid, &GuidOffset);
   if (EFI_ERROR(status)) {
-    DEBUG((DEBUG_WARN, "Schduler guid not found in buffer\n"));
+    DEBUG((DEBUG_WARN, "Scheduler guid not found in buffer\n"));
     return EFI_NOT_FOUND;
   }
 
@@ -556,13 +563,11 @@ find_protocol_scheduler_v2(
 STATIC
 EFI_STATUS
 find_protocol_xbldt(
-  IN TE_INFO_STRUCT *Binary,
-  IN GUID *KeyGuid,
-  OUT UINTN *TargetAddress
-){
+    IN TE_INFO_STRUCT *Binary, IN GUID *KeyGuid, OUT UINTN *TargetAddress)
+{
   // Find Guid Offset
-  UINTN  GuidOffset = 0;
-  EFI_STATUS status = find_guid_in_buffer(Binary, KeyGuid, &GuidOffset);
+  UINTN      GuidOffset = 0;
+  EFI_STATUS status     = find_guid_in_buffer(Binary, KeyGuid, &GuidOffset);
   if (EFI_ERROR(status)) {
     DEBUG((DEBUG_WARN, "XBLDT guid not found in buffer\n"));
     return EFI_NOT_FOUND;
@@ -612,22 +617,65 @@ find_protocol_xbldt(
   return EFI_NOT_FOUND;
 }
 
+STATIC
 EFI_STATUS
-FindLKFuncs(
-  IN TE_INFO_STRUCT *Binary,
-  OUT LK_INIT_FUNCTIONS *LkFuncs
-){
+get_scheduler_revision(
+    IN TE_INFO_STRUCT *Binary,
+    IN UINT64          CallerAddress, // caller of set_scheduler_config
+    OUT UINT64        *Revision)
+{
   EFI_STATUS Status = EFI_SUCCESS;
-  UINT64 TmpCallerOffset = 0, TmpTargetAddress = 0;
+
+  // Find sec protocol revision
+  Status = find_first_bl_before_offset(
+      Binary, phy_addr_to_offset(Binary, CallerAddress), &CallerAddress);
+  if (EFI_ERROR(Status))
+    goto err_exit;
+
+  Status = find_first_bl_before_offset(
+      Binary, phy_addr_to_offset(Binary, CallerAddress), &CallerAddress);
+  if (EFI_ERROR(Status))
+    goto err_exit;
+
+  Status = get_bl_target_addr(
+      Binary, phy_addr_to_offset(Binary, CallerAddress), &CallerAddress);
+  if (EFI_ERROR(Status))
+    goto err_exit;
+
+  INST movz = {
+      .val = *(UINT32 *)(Binary->programBuffer +
+                         phy_addr_to_offset(Binary, CallerAddress))};
+  INST movk = {
+      .val = *(UINT32 *)(Binary->programBuffer + 4 +
+                         phy_addr_to_offset(Binary, CallerAddress))};
+  if (validate_movz(&movz) && validate_movk(&movk)) {
+    *Revision = parse_movz_with_movk(&movz, &movk);
+    return EFI_SUCCESS;
+  }
+
+err_exit:
+  DEBUG((DEBUG_ERROR, "Failed to parse scheduler revision\n"));
+  *Revision = 0;
+  return EFI_NOT_FOUND;
+}
+
+STATIC
+EFI_STATUS
+FindLKFuncs(IN TE_INFO_STRUCT *Binary, OUT LK_INIT_FUNCTIONS *LkFuncs)
+{
+  EFI_STATUS Status           = EFI_SUCCESS;
+  UINT64     TmpCallerOffset  = 0;
+  UINT64     TmpTargetAddress = 0;
+
   STATIC UINT8 set_scheduler_config_bin[] = {
-    0x01, 0x00, 0x40, 0xB9, // ldr w1, [x0]
-    0x3F, 0x04, 0x00, 0x71  // cmp w1, #1
+      0x01, 0x00, 0x40, 0xB9, // ldr w1, [x0]
+      0x3F, 0x04, 0x00, 0x71  // cmp w1, #1
   };
   STATIC UINT8 aux_core_entry_bin[] = {
-    0x02, 0x20, 0x18, 0xD5,
-    0xDF, 0x3F, 0x03, 0xD5,
-    0x02, 0x00, 0x80, 0x52,
-    0x22, 0x20, 0x18, 0xD5
+      0x02, 0x20, 0x18, 0xD5, // msr ttbr0_el1, x2
+      0xDF, 0x3F, 0x03, 0xD5, // isb
+      0x02, 0x00, 0x80, 0x52, // mov w2, #0
+      0x22, 0x20, 0x18, 0xD5  // msr ttbr1_el1, x2
   };
 
   if (NULL == Binary || NULL == LkFuncs)
@@ -640,119 +688,201 @@ FindLKFuncs(
   LkFuncs->Initialized = FALSE;
 
   // Find the place that calls this function
-  Status = find_caller_addr_of_func_with_codes(Binary, set_scheduler_config_bin,
-                                              sizeof(set_scheduler_config_bin), &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
+  Status = find_caller_addr_of_func_with_codes(
+      Binary, set_scheduler_config_bin, sizeof(set_scheduler_config_bin),
+      &TmpCallerOffset);
+  if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to find caller of set_scheduler_config\n"));
     goto exit;
   }
 
   // Get the first RET before the caller
-  Status = find_first_ret_before_offset(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
-    DEBUG((DEBUG_ERROR, "Failed to find RET before caller of set_scheduler_config\n"));
+  Status = find_first_ret_before_offset(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
+  if (EFI_ERROR(Status)) {
+    DEBUG(
+        (DEBUG_ERROR,
+         "Failed to find RET before caller of set_scheduler_config\n"));
     goto exit;
   }
 
   // Find the caller of the function after RET
-  Status = find_caller_addr_of_func_with_offset(Binary, phy_addr_to_offset(Binary, TmpCallerOffset)+4, &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
+  Status = find_caller_addr_of_func_with_offset(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset) + 4,
+      &TmpCallerOffset);
+  if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to find caller of function after RET\n"));
     goto exit;
   }
-  Status = get_bl_target_addr(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
-  if(EFI_ERROR(Status)){
-    DEBUG((DEBUG_ERROR, "Failed to find target address of function after RET\n"));
+  Status = get_bl_target_addr(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
+  if (EFI_ERROR(Status)) {
+    DEBUG(
+        (DEBUG_ERROR, "Failed to find target address of function after RET\n"));
     goto exit;
   }
   LkFuncs->lk_gic_config = (VOID *)TmpTargetAddress;
 
+  // Find sec protocol revision
+  Status = get_scheduler_revision(Binary, TmpCallerOffset, &LkFuncs->Revision);
+  if (EFI_ERROR(Status) || LkFuncs->Revision <= 0x10000) {
+    DEBUG((DEBUG_ERROR, "Failed to find scheduler revision\n"));
+    goto exit;
+  }
+
+  if (LkFuncs->Revision >= 0x10003) {
+    UINT64 ret_address                 = 0;
+    UINT64 start_scheduler_func_caller = 0;
+    // Find revision 1.3 arguements
+    Status = find_first_ret_before_offset(
+        Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &ret_address);
+    // Find who calls this function
+    Status = find_caller_addr_of_func_with_offset(
+        Binary, phy_addr_to_offset(Binary, ret_address + 4),
+        &start_scheduler_func_caller);
+    DEBUG(
+        (DEBUG_WARN, "StartSchedulerFunc caller at 0x%lX\n",
+         start_scheduler_func_caller));
+    // Parse ADRL X1, #immediate, it should be right before the BL
+    INST adrp_inst = {
+        .val = *(
+            UINT32 *)(Binary->programBuffer +
+                      phy_addr_to_offset(Binary, start_scheduler_func_caller) -
+                      8)};
+    if (validate_adrp(&adrp_inst)) {
+      parse_adrp(
+          &adrp_inst,
+          phy_addr_to_offset(Binary, start_scheduler_func_caller) - 4);
+      INST add_inst = {
+          .val = *(UINT32 *)(Binary->programBuffer +
+                             phy_addr_to_offset(
+                                 Binary, start_scheduler_func_caller) -
+                             4)};
+      if (validate_add(&add_inst)) {
+        LkFuncs->arg1_of_config_and_start_scheduler_func =
+            (VOID *)offset_to_phy_addr(
+                Binary, adrp_inst.adrp.RdAfterExecution + add_inst.add.imm12);
+        DEBUG(
+            (EFI_D_WARN, "StartSchedulerFunc arguement at 0x%lX\n",
+             (UINTN)LkFuncs->arg1_of_config_and_start_scheduler_func));
+      }
+    }
+  }
+
   // Find next next BL
-  Status = find_first_bl_after_offset(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
+  Status = find_first_bl_after_offset(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
+  if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to find next BL after lk_gic_config\n"));
     goto exit;
   }
-  Status = find_first_bl_after_offset(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
+  Status = find_first_bl_after_offset(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
+  if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to find next next BL after lk_gic_config\n"));
     goto exit;
   }
-  Status = get_bl_target_addr(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
-  if(EFI_ERROR(Status)){
-    DEBUG((DEBUG_ERROR, "Failed to find target address of next BL after lk_gic_config\n"));
+  Status = get_bl_target_addr(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
+  if (EFI_ERROR(Status)) {
+    DEBUG(
+        (DEBUG_ERROR,
+         "Failed to find target address of next BL after lk_gic_config\n"));
     goto exit;
   }
   LkFuncs->lk_init_shutdown1 = (VOID *)TmpTargetAddress;
 
-  // Find next BL
-  Status = find_first_bl_after_offset(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
-    DEBUG((DEBUG_ERROR, "Failed to find next BL after lk_init_shutdown1\n"));
-    goto exit;
+  if (0x10000 <= LkFuncs->Revision && LkFuncs->Revision <= 0x10002) {
+    // Find next BL
+    Status = find_first_bl_after_offset(
+        Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
+    if (EFI_ERROR(Status)) {
+      DEBUG((DEBUG_ERROR, "Failed to find next BL after lk_init_shutdown1\n"));
+      goto exit;
+    }
+    Status = get_bl_target_addr(
+        Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
+    if (EFI_ERROR(Status)) {
+      DEBUG(
+          (DEBUG_ERROR, "Failed to find target address of next BL after "
+                        "lk_init_shutdown1\n"));
+      goto exit;
+    }
+    LkFuncs->lk_init_shutdown2 = (VOID *)TmpTargetAddress;
   }
-  Status = get_bl_target_addr(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
-  if(EFI_ERROR(Status)){
-    DEBUG((DEBUG_ERROR, "Failed to find target address of next BL after lk_init_shutdown1\n"));
-    goto exit;
-  }
-  LkFuncs->lk_init_shutdown2 = (VOID *)TmpTargetAddress;
 
   // Find kernel init
-  Status = find_first_bl_after_offset(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
-  if(EFI_ERROR(Status)){
+  Status = find_first_bl_after_offset(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpCallerOffset);
+  if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to find next BL after lk_init_shutdown2\n"));
     goto exit;
   }
-  Status = get_bl_target_addr(Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
-  if(EFI_ERROR(Status)){
-    DEBUG((DEBUG_ERROR, "Failed to find target address of next BL after lk_init_shutdown2\n"));
+  Status = get_bl_target_addr(
+      Binary, phy_addr_to_offset(Binary, TmpCallerOffset), &TmpTargetAddress);
+  if (EFI_ERROR(Status)) {
+    DEBUG(
+        (DEBUG_ERROR,
+         "Failed to find target address of next BL after lk_init_shutdown2\n"));
     goto exit;
   }
   LkFuncs->lk_init_scheduler = (VOID *)TmpTargetAddress;
 
   // Find aux_core_entry
-  Status = find_data_in_buffer(Binary, aux_core_entry_bin, sizeof(aux_core_entry_bin), &TmpTargetAddress);
-  if(EFI_ERROR(Status)){
+  Status = find_data_in_buffer(
+      Binary, aux_core_entry_bin, sizeof(aux_core_entry_bin),
+      &TmpTargetAddress);
+  if (EFI_ERROR(Status)) {
     DEBUG((DEBUG_ERROR, "Failed to find aux_core_entry\n"));
     goto exit;
   }
-  TmpTargetAddress = offset_to_phy_addr(Binary, TmpTargetAddress) - 4*3; // 3 instructions before
+  TmpTargetAddress = offset_to_phy_addr(Binary, TmpTargetAddress) -
+                     4 * 3; // 3 instructions before
   LkFuncs->lk_aux_cores_entry_point = (VOID *)TmpTargetAddress;
 
   // Validate all functions physical addresses
   // The physical address Should locate in TE region
-  if ((UINTN)LkFuncs->lk_gic_config < Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
-      (UINTN)LkFuncs->lk_gic_config >
-          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode + Binary->teSize ||
-      (UINTN)LkFuncs->lk_init_shutdown1 < Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
-      (UINTN)LkFuncs->lk_init_shutdown1 >
-          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode + Binary->teSize ||
-      (UINTN)LkFuncs->lk_init_shutdown2 < Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
-      (UINTN)LkFuncs->lk_init_shutdown2 >
-          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode + Binary->teSize ||
-      (UINTN)LkFuncs->lk_init_scheduler < Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
-      (UINTN)LkFuncs->lk_init_scheduler >
-          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode + Binary->teSize ||
-      (UINTN)LkFuncs->lk_aux_cores_entry_point < Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
+  if ((UINTN)LkFuncs->lk_gic_config <
+          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
+      (UINTN)LkFuncs->lk_gic_config > Binary->teHeader->ImageBase +
+                                          Binary->teHeader->BaseOfCode +
+                                          Binary->teSize ||
+      (UINTN)LkFuncs->lk_init_shutdown1 <
+          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
+      (UINTN)LkFuncs->lk_init_shutdown1 > Binary->teHeader->ImageBase +
+                                              Binary->teHeader->BaseOfCode +
+                                              Binary->teSize ||
+      ((LkFuncs->Revision) <= 0x10002 &&
+       ((UINTN)LkFuncs->lk_init_shutdown2 <
+            Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
+        (UINTN)LkFuncs->lk_init_shutdown2 > Binary->teHeader->ImageBase +
+                                                Binary->teHeader->BaseOfCode +
+                                                Binary->teSize)) ||
+      (UINTN)LkFuncs->lk_init_scheduler <
+          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
+      (UINTN)LkFuncs->lk_init_scheduler > Binary->teHeader->ImageBase +
+                                              Binary->teHeader->BaseOfCode +
+                                              Binary->teSize ||
+      (UINTN)LkFuncs->lk_aux_cores_entry_point <
+          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode ||
       (UINTN)LkFuncs->lk_aux_cores_entry_point >
-          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode + Binary->teSize) {
+          Binary->teHeader->ImageBase + Binary->teHeader->BaseOfCode +
+              Binary->teSize) {
     DEBUG((DEBUG_ERROR, "One or more LK function addresses are invalid\n"));
     Status = EFI_NOT_FOUND;
     goto exit;
-  } else
-      LkFuncs->Initialized = TRUE;
+  }
+  else
+    LkFuncs->Initialized = TRUE;
 
 exit:
   return Status;
 }
 
-VOID
-InitProtocolFinder(
-  IN EFI_PHYSICAL_ADDRESS *ScheAddr,
-  IN EFI_PHYSICAL_ADDRESS *XBLDTOpsAddr
-){
-  EFI_STATUS status = EFI_SUCCESS;
+VOID InitProtocolFinder(
+    IN EFI_PHYSICAL_ADDRESS *ScheAddr, IN EFI_PHYSICAL_ADDRESS *XBLDTOpsAddr)
+{
+  EFI_STATUS    status               = EFI_SUCCESS;
   STATIC UINT32 EnableMultiThreading = 0;
 
   // Do search only once
@@ -782,8 +912,9 @@ InitProtocolFinder(
 
     if (!ScheIntrAddr) {
       // Try variant 2
-      DEBUG((EFI_D_WARN,"try find scheduler variant 2\n"));
-      status = find_protocol_scheduler_v2(&CoreTE, &gEfiSchedIntfGuid, &ScheIntrAddr);
+      DEBUG((EFI_D_WARN, "try find scheduler variant 2\n"));
+      status = find_protocol_scheduler_v2(
+          &CoreTE, &gEfiSchedIntfGuid, &ScheIntrAddr);
     }
 
     ASSERT(!EFI_ERROR(status));
@@ -806,33 +937,34 @@ InitProtocolFinder(
   }
 
   // Check MultiThreading Enable Flag
-  status = LocateConfigurationMapUINT32ByName("EnableMultiThreading", &EnableMultiThreading);
-  if (!EFI_ERROR(status) &&  EnableMultiThreading != 0 && LkInitFuncs.Initialized == FALSE) {
+  status = LocateConfigurationMapUINT32ByName(
+      "EnableMultiThreading", &EnableMultiThreading);
+  if (!EFI_ERROR(status) && EnableMultiThreading != 0 &&
+      LkInitFuncs.Initialized == FALSE) {
     // Initialize LK functions
     status = FindLKFuncs(&CoreTE, &LkInitFuncs);
-    LkInitFuncs.Magic = 0xDEADBEEF;
   }
 
   /* Ensure cache coherence */
   WriteBackInvalidateDataCacheRange(&LkInitFuncs, sizeof(LkInitFuncs));
 }
 
-VOID StartUpScheduler(
-  VOID *PeiContinueBoot,
-  VOID *AuxCoresEntryPoint
-) {
+VOID StartUpScheduler(VOID *PeiContinueBoot, VOID *AuxCoresEntryPoint)
+{
   EFI_STATUS status = EFI_SUCCESS;
 
   // Check if LK functions are initialized
   if (LkInitFuncs.Initialized == FALSE) {
-    DEBUG((DEBUG_ERROR, "LK functions not initialized or Multithreading not enabled, cannot start scheduler!\n"));
+    DEBUG(
+        (DEBUG_ERROR, "LK functions not initialized or Multithreading not "
+                      "enabled, cannot start scheduler!\n"));
     return;
   }
 
   if (!EFI_ERROR(status)) {
-    UINT32 MaxCoreCnt = 0;
-    UINT32 EarlyInitCoreCnt = 0;
-    ARM_MEMORY_REGION_DESCRIPTOR_EX SchedHeap = {0};
+    UINT32                          MaxCoreCnt       = 0;
+    UINT32                          EarlyInitCoreCnt = 0;
+    ARM_MEMORY_REGION_DESCRIPTOR_EX SchedHeap        = {0};
 
     // Get Max Core Count
     status = LocateConfigurationMapUINT32ByName("MaxCoreCnt", &MaxCoreCnt);
@@ -841,51 +973,66 @@ VOID StartUpScheduler(
     }
 
     // Get Early Init Core Count
-    status = LocateConfigurationMapUINT32ByName("EarlyInitCoreCnt", &EarlyInitCoreCnt);
+    status = LocateConfigurationMapUINT32ByName(
+        "EarlyInitCoreCnt", &EarlyInitCoreCnt);
     if (EFI_ERROR(status) || EarlyInitCoreCnt == 0) {
       EarlyInitCoreCnt = 2; // Default early init core count
     }
 
     status = LocateMemoryMapAreaByName("Sched Heap", &SchedHeap);
     if (EFI_ERROR(status)) {
-        DEBUG((DEBUG_ERROR, "Failed to locate \"Sched Heap\"\r\n"));
+      DEBUG((DEBUG_ERROR, "Failed to locate \"Sched Heap\"\r\n"));
     }
 
     // Find init function addresses
     LkInitFuncs.lk_gic_config();
     LkInitFuncs.lk_init_shutdown1(MaxCoreCnt);
-    LkInitFuncs.lk_init_shutdown2();
-    DEBUG((EFI_D_WARN, "\tMultiThreading\t\t: ON\r\n\tCPU Cores\t\t: %d (init %d)\r\n", MaxCoreCnt, EarlyInitCoreCnt));
+    DEBUG(
+        (DEBUG_WARN, "\tScheduler Revision\t\t: %d.%d\r\n",
+         LkInitFuncs.Revision >> 16, LkInitFuncs.Revision & 0xFFFF));
+    DEBUG(
+        (EFI_D_WARN,
+         "\tMultiThreading\t\t: ON\r\n\tCPU Cores\t\t: %d (init %d)\r\n",
+         MaxCoreCnt, EarlyInitCoreCnt));
 
-    LkInitFuncs.lk_init_scheduler(
-      (VOID*)PeiContinueBoot,
-      0, // Args?
-      SchedHeap.Address,
-      SchedHeap.Length,
-      AuxCoresEntryPoint,
-      MaxCoreCnt,
-      EarlyInitCoreCnt
-    );
+    if (LkInitFuncs.Revision <= 0x10002) {
+      LkInitFuncs.lk_init_shutdown2();
+
+      LkInitFuncs.lk_init_scheduler(
+          (VOID *)PeiContinueBoot,
+          0, // Args?
+          SchedHeap.Address, SchedHeap.Length, AuxCoresEntryPoint, MaxCoreCnt,
+          EarlyInitCoreCnt);
+    }
+    else if (LkInitFuncs.Revision >= 0x10003) {
+      DEBUG(
+          (EFI_D_ERROR, "                  Init scheduler v3: 0x%08lX",
+           (UINT64)LkInitFuncs.arg1_of_config_and_start_scheduler_func
+               ->CoreRelatedMask));
+      LkInitFuncs.lk_init_scheduler_v3(
+          (VOID *)PeiContinueBoot,
+          0, // Args?
+          SchedHeap.Address, SchedHeap.Length, AuxCoresEntryPoint,
+          AuxCoresEntryPoint, MaxCoreCnt, EarlyInitCoreCnt,
+          LkInitFuncs.arg1_of_config_and_start_scheduler_func->CoreRelatedMask);
+    }
 
     // Should never reach here
-    DEBUG((EFI_D_WARN, "MultiThreading Schduler failed to start!\n"));
+    DEBUG((EFI_D_WARN, "MultiThreading Scheduler failed to start!\n"));
   }
 
   DEBUG((EFI_D_WARN, "\tMultiThreading\t\t: OFF\n"));
 }
 
-VOID BootSecondaryCpu(
-  UINTN CpuIdx
-) {
+VOID BootSecondaryCpu(UINTN CpuIdx)
+{
   if (LkInitFuncs.lk_aux_cores_entry_point != NULL)
     LkInitFuncs.lk_aux_cores_entry_point(CpuIdx);
 
   DEBUG((EFI_D_WARN, "\tCore %d hang up\t\t\n", CpuIdx));
 
   // Boot Failed?
-  while(1){
-    asm volatile(
-      "wfi\n\t"
-      : : : "memory");
+  while (1) {
+    asm volatile("wfi\n\t" : : : "memory");
   }
 }
