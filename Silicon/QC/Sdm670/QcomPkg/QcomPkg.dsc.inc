@@ -45,5 +45,3 @@
 
   AcpiPlatformUpdateLib|QcomPkg/Library/AcpiPlatformUpdateLib/AcpiPlatformUpdateLib.inf
   PlatformThemeLib|QcomPkg/Library/PlatformThemeLib/PlatformThemeLib.inf
-
-  ConsoleMsgLib|PcBdsPkg/Library/ConsoleMsgLibNull/ConsoleMsgLibNull.inf
