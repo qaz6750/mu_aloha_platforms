@@ -100,9 +100,6 @@ READ_LOCK_STATUS   = TRUE
   INF HidPkg/UsbKbHidDxe/UsbKbHidDxe.inf
   INF HidPkg/UsbMouseHidDxe/UsbMouseHidDxe.inf
 
-  # Why is this different yet using the same names and GUIDs? (Uses different function signatures for callbacks...)
-  #INF QcomPkg/PatchedBinaries/HidMouseAbsolutePointerDxe.inf
-
   # Disk IO
   INF MdeModulePkg/Bus/Scsi/ScsiBusDxe/ScsiBusDxe.inf
   INF MdeModulePkg/Bus/Scsi/ScsiDiskDxe/ScsiDiskDxe.inf
