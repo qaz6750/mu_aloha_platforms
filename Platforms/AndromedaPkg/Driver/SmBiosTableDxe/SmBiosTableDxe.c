@@ -695,8 +695,8 @@ VOID BIOSInfoUpdateSmbiosType0(VOID)
 ************************************************************************/
 
 VOID SysInfoUpdateSmbiosType1(
-    CHAR8 *ProductNameString, CHAR8 *VersionString, CHAR8 *FamilyString,
-    CHAR8 *RetailSkuString)
+    CHAR8 *ProductNameString, CHAR8 *VersionString, CHAR8 *SerialNumberString,
+    CHAR8 *FamilyString, CHAR8 *RetailSkuString)
 {
   // Update string table before proceeds
   mSysInfoType1Strings[0] = (CHAR8 *)FixedPcdGetPtr(PcdSmbiosSystemBrand);
