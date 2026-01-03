@@ -99,7 +99,7 @@ INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Application/QcomChar
 #INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/ShmBridgeDxe/ShmBridgeDxeLA.inf
 
 # Patched Binaries
-INF QcomPkg/PatchedBinaries/HALIOMMUDxe.inf
+INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/HALIOMMUDxe/HALIOMMUDxe.inf
 INF QcomPkg/PatchedBinaries/PciHostBridgeDxe.inf
 INF QcomPkg/PatchedBinaries/UFSDxe.inf
 INF QcomPkg/PatchedBinaries/UsbConfigDxe.inf

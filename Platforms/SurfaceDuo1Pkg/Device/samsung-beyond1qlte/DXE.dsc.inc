@@ -95,7 +95,7 @@ SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PILDxe/PILDxe.in
 #QcomPkg/Drivers/ShmBridgeDxe/ShmBridgeDxeLA.inf
 
 QcomPkg/PatchedBinaries/ButtonsDxe.inf
-QcomPkg/PatchedBinaries/HALIOMMUDxe.inf
+SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/HALIOMMUDxe/HALIOMMUDxe.inf
 QcomPkg/PatchedBinaries/PciHostBridgeDxe.inf
 QcomPkg/PatchedBinaries/UsbConfigDxe.inf
 SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/PatchedBinaries/UFSDxe.inf

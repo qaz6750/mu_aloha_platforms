@@ -85,7 +85,7 @@ SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Application/QcomChargerA
 #QcomPkg/Drivers/ShmBridgeDxe/ShmBridgeDxeLA.inf
 SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/MiPkg/Protocol/MiToken/MiToken.inf
 
-QcomPkg/PatchedBinaries/HALIOMMUDxe.inf
+SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/HALIOMMUDxe/HALIOMMUDxe.inf
 QcomPkg/PatchedBinaries/PciHostBridgeDxe.inf
 QcomPkg/PatchedBinaries/UFSDxe.inf
 SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/PatchedBinaries/UsbConfigDxe.inf
