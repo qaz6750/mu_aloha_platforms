@@ -7,6 +7,8 @@
   ENTRY_POINT                    = SmBiosTableDxeInitialize
 
 [Sources.common]
+  MemoryUtils.c
+  PlatformUtils.c
   SmBiosTableDxe.c
 
 [FixedPcd]
@@ -53,9 +55,8 @@
   gEfiChipInfoProtocolGuid
   gEfiHash2ProtocolGuid
   gEfiPlatformInfoProtocolGuid
-  gEfiSmbiosProtocolGuid
-# Ram Size Detect Patch
   gEfiRamPartitionProtocolGuid
+  gEfiSmbiosProtocolGuid
   
 [Depex]
   gEfiHash2ProtocolGuid AND
