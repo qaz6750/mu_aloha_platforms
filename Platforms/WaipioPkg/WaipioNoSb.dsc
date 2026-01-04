@@ -81,3 +81,5 @@
 !include $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PcdsFixedAtBuild.dsc.inc
 !include AndromedaPkg/Andromeda.dsc.inc
 !include AndromedaPkg/Frontpage.dsc.inc
+!include CranePkg/Crane.dsc.inc
+

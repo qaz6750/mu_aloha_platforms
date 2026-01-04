@@ -15,7 +15,13 @@ APRIORI DXE {
     # Core Drivers
     INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
     INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+
+    # Add system memories
     INF AndromedaPkg/Driver/RamPartitionDxe/RamPartitionDxe.inf
+
+    # Crane Drivers
+    !include CranePkg/Crane.Aprioir.inc
+
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/SmemDxe/SmemDxe.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/DALSYSDxe/DALSYSDxe.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/HWIODxe/HWIODxe.inf
@@ -80,7 +86,7 @@ APRIORI DXE {
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PILDxe/PILDxe.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/SPSSDxe/SPSSDxe.inf
     INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
-#    INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+    INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/EmbeddedMonotonicCounter/EmbeddedMonotonicCounter.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
     INF MdeModulePkg/Universal/PrintDxe/PrintDxe.inf
@@ -143,6 +149,5 @@ APRIORI DXE {
     INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
     INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
     INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
-    INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
 #    INF AndromedaPkg/Driver/DisplayCallerDxe/DisplayCallerDxe.inf
 }
