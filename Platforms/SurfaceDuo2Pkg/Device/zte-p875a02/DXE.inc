@@ -3,7 +3,7 @@ INF QcomPkg/PatchedBinaries/ClockDxe.inf
 INF QcomPkg/PatchedBinaries/MinidumpTADxe.inf
 INF $(PACKAGE_NAME)/Device/qcom-mtp8350/PatchedBinaries/PmicDxeLa.inf
 INF QcomPkg/PatchedBinaries/QcomWDogDxe.inf
-INF QcomPkg/PatchedBinaries/UFSDxe.inf
+INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/UFSDxe/UFSDxe.inf
 INF QcomPkg/PatchedBinaries/UsbConfigDxe.inf
 
 # Drivers

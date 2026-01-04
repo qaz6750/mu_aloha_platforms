@@ -4,7 +4,7 @@
   QcomPkg/PatchedBinaries/MinidumpTADxe.inf
   QcomPkg/PatchedBinaries/PmicDxeLa.inf
   QcomPkg/PatchedBinaries/QcomWDogDxe.inf
-  QcomPkg/PatchedBinaries/UFSDxe.inf
+  $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/UFSDxe/UFSDxe.inf
   QcomPkg/PatchedBinaries/UsbConfigDxe.inf
   AndromedaPkg/Driver/GpioButtons/GpioButtons.inf
   AndromedaPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf

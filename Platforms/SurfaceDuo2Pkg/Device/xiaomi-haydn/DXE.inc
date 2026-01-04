@@ -3,7 +3,7 @@ INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/ButtonsDxe.inf
 INF QcomPkg/PatchedBinaries/ClockDxe.inf
 INF QcomPkg/PatchedBinaries/MinidumpTADxe.inf
 INF QcomPkg/PatchedBinaries/QcomWDogDxe.inf
-INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/UFSDxe.inf
+INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/UFSDxe/UFSDxe.inf
 INF QcomPkg/PatchedBinaries/UsbConfigDxe.inf
 
 # Drivers
