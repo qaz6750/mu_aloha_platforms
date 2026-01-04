@@ -4,7 +4,7 @@
 #include <oskal/cr_status.h>
 #include <oskal/cr_string.h>
 #include <oskal/cr_types.h>
-
+#include <oskal/common.h>
 #define CMD_DB_MAGIC 0x0c0330db
 
 typedef struct {

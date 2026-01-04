@@ -1,5 +1,6 @@
 #include "cmddb_internal.h"
 
+
 // Validate CmdDB magic
 BOOLEAN
 ValidateCmdDBHeader(IN CmdDbHeader *cmd_db_header)
@@ -17,15 +18,18 @@ FindCmdDBEntry(
     OUT cmd_db_entry *entry)
 {
   if (!cmd_db_header || !entry)
-    return EFI_INVALID_PARAMETER;
+    return CR_INVALID_PARAMETER;
 
   if (!address && !name) {
     log_warn("Ignore searching entry with (address == 0)");
-    return EFI_INVALID_PARAMETER;
+    return CR_INVALID_PARAMETER;
   }
 
   for (UINTN i = 0; i < CMD_DB_MAX_SLAVES; i++) {
-    if (cmd_db_header->rscHeaders[i].slaveId == RSC_SLAVE_HW_INVALID)
+    // If address was provided, skip non-matching slave IDs
+    if (cmd_db_header->rscHeaders[i].slaveId == RSC_SLAVE_HW_INVALID ||
+        (address && (cmd_db_header->rscHeaders[i].slaveId != GET_FIELD(
+                         address, SLAVE_ID_MSK))))
       continue;
     ResourceHeader *rsc_header = &cmd_db_header->rscHeaders[i];
     for (UINTN j = 0; j < rsc_header->count; j++) {
@@ -34,19 +38,19 @@ FindCmdDBEntry(
               ->data[rsc_header->headerOffset + j * sizeof(EntryHeader)];
       if ((address && (tmp_entry_hdr->address == address)) ||
           (name && cr_strncmp(
-               (const CHAR8 *)tmp_entry_hdr->id, name,
-               sizeof(tmp_entry_hdr->id)) == 0)) {
+                       (const CHAR8 *)tmp_entry_hdr->id, name,
+                       sizeof(tmp_entry_hdr->id)) == 0)) {
         entry->Address = tmp_entry_hdr->address;
         cr_memcpy(entry->Name, tmp_entry_hdr->id, sizeof(entry->Name));
         entry->DataLength = tmp_entry_hdr->length;
         entry->Data =
             &cmd_db_header
                  ->data[rsc_header->dataOffset + tmp_entry_hdr->offset];
-        return EFI_SUCCESS;
+        return CR_SUCCESS;
       }
     }
   }
-  return EFI_NOT_FOUND;
+  return CR_NOT_FOUND;
 }
 
 // Dump CmdDB Info
@@ -119,14 +123,14 @@ VOID DumpCmdDBInfo(IN CmdDbHeader *cmd_db_header)
 CR_STATUS
 GetCmdDBEntryAddressByName(
     IN CmdDbHeader *cmd_db_header, IN CONST CHAR8 *entry_name,
-    OUT UINTN *address)
+    OUT UINT32 *address)
 {
   if (!cmd_db_header || !entry_name || !address)
     return CR_INVALID_PARAMETER;
 
   cmd_db_entry entry  = {0};
   CR_STATUS    status = FindCmdDBEntry(cmd_db_header, 0, entry_name, &entry);
-  if (EFI_ERROR(status))
+  if (status != CR_SUCCESS)
     return status;
 
   *address = entry.Address;
@@ -143,7 +147,7 @@ GetCmdDBEntryNameByAddress(
 
   cmd_db_entry entry  = {0};
   CR_STATUS    status = FindCmdDBEntry(cmd_db_header, address, NULL, &entry);
-  if (EFI_ERROR(status))
+  if (status != CR_SUCCESS)
     return status;
 
   cr_memcpy(entry_name, entry.Name, sizeof(entry.Name));
@@ -161,7 +165,7 @@ GetCmdDBAuxDataByName(
 
   cmd_db_entry entry  = {0};
   CR_STATUS    status = FindCmdDBEntry(cmd_db_header, 0, name, &entry);
-  if (EFI_ERROR(status))
+  if (status != CR_SUCCESS)
     return status;
 
   *length = entry.DataLength;
@@ -179,7 +183,7 @@ GetCmdDBAuxDataByAddress(
 
   cmd_db_entry entry  = {0};
   CR_STATUS    status = FindCmdDBEntry(cmd_db_header, address, NULL, &entry);
-  if (EFI_ERROR(status))
+  if (status != CR_SUCCESS)
     return status;
 
   *length = entry.DataLength;

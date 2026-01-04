@@ -6,7 +6,7 @@
 #include <Library/cmddb.h>
 #include <Uefi.h>
 
-#include <Protocol/EFICmdDBProtocol.h>
+#include <Protocol/EFICmdDBCrProtocol.h>
 
 // Global pointer to CmdDB header
 STATIC CmdDbHeader *gCmdDbHeader = NULL;
@@ -15,7 +15,7 @@ STATIC CmdDbHeader *gCmdDbHeader = NULL;
 EFI_STATUS
 EFIAPI
 ProtocolGetEntryAddressByName(
-    IN EFI_CMD_DB_PROTOCOL *This, IN CONST CHAR8 *Name, OUT UINTN *Address)
+    IN EFI_CMD_DB_PROTOCOL *This, IN CONST CHAR8 *Name, OUT UINT32 *Address)
 {
   if (gCmdDbHeader == NULL || Name == NULL || Address == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -28,7 +28,7 @@ ProtocolGetEntryAddressByName(
 EFI_STATUS
 EFIAPI
 ProtocolGetEntryNameByAddress(
-    IN EFI_CMD_DB_PROTOCOL *This, IN UINTN Address, OUT CONST CHAR8 *Name)
+    IN EFI_CMD_DB_PROTOCOL *This, IN UINT32 Address, OUT CONST CHAR8 *Name)
 {
   if (gCmdDbHeader == NULL || Name == NULL) {
     return EFI_INVALID_PARAMETER;
@@ -57,7 +57,7 @@ ProtocolGetAuxDataByName(
 EFI_STATUS
 EFIAPI
 ProtocolGetAuxDataByAddress(
-    IN EFI_CMD_DB_PROTOCOL *This, IN CONST UINTN Address, OUT UINT8 *AuxData,
+    IN EFI_CMD_DB_PROTOCOL *This, IN CONST UINT32 Address, OUT UINT8 *AuxData,
     OUT UINT16 *Length)
 {
   if (gCmdDbHeader == NULL || AuxData == NULL || Length == NULL) {
@@ -79,9 +79,6 @@ CmdDBEntryPoint(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable)
 {
   EFI_STATUS Status = EFI_SUCCESS;
 
-  DEBUG((EFI_D_WARN, "CmdDB Dxe Loaded\n"));
-  DEBUG((EFI_D_WARN, "CmdDB Dump Information\n"));
-
   // Get AOP CMD DB address from memory map
   ARM_MEMORY_REGION_DESCRIPTOR_EX CmdDBMemoryRegion = {0};
   Status = LocateMemoryMapAreaByName("AOP CMD DB", &CmdDBMemoryRegion);
@@ -100,12 +97,9 @@ CmdDBEntryPoint(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable)
     return EFI_ABORTED;
   }
 
-  // Dump CmdDB information to see all available entries
-  DumpCmdDBInfo(gCmdDbHeader);
-
   // Install protocol
   Status = gBS->InstallMultipleProtocolInterfaces(
-      &ImageHandle, &gEfiCmdDBProtocolGuid, &gCmdDBProtocol, NULL, NULL);
+      &ImageHandle, &gEfiCmdDBCrProtocolGuid, &gCmdDBProtocol, NULL, NULL);
   if (EFI_ERROR(Status)) {
     DEBUG(
         (EFI_D_ERROR, "CmdDBEntryPoint: InstallProtocolInterface returned %r\n",
@@ -116,9 +110,12 @@ CmdDBEntryPoint(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable)
 // Testcases
 #if 0
   {
+    // Dump CmdDB information to see all available entries
+    DumpCmdDBInfo(gCmdDbHeader);
+
     EFI_CMD_DB_PROTOCOL *CmdDBProtocol = NULL;
     Status                             = gBS->LocateProtocol(
-        &gEfiCmdDBProtocolGuid, NULL, (VOID **)&CmdDBProtocol);
+        &gEfiCmdDBCrProtocolGuid, NULL, (VOID **)&CmdDBProtocol);
     if (EFI_ERROR(Status)) {
       DEBUG(
           (EFI_D_ERROR, "CmdDBEntryPoint: LocateProtocol returned %r\n",

@@ -5,11 +5,11 @@
 
 [Defines]
   INF_VERSION                    = 0x00010005
-  BASE_NAME                      = CmdDBDxe
-  FILE_GUID                      = 0B5DF34A-CC57-4A47-B3F2-D64DA641B1B0
+  BASE_NAME                      = RpmhCrDxe
+  FILE_GUID                      = db49d205-0df7-4e0e-90d4-57d9cabfa8bd
   MODULE_TYPE                    = DXE_DRIVER
   VERSION_STRING                 = 1.0
-  ENTRY_POINT                    = CmdDBEntryPoint
+  ENTRY_POINT                    = RpmhEntryPoint
 
 #
 # The following information is for reference only and not required by the build tools.
@@ -18,25 +18,25 @@
 #
 
 [Sources]
-  CmdDBDxe.c
+  RpmhCrDxe.c
 
 [Packages]
   MdePkg/MdePkg.dec
-  CroissantPkg/CroissantPkg.dec
+  CranePkg/CranePkg.dec
   AndromedaPkg/AndromedaPkg.dec
 
 [LibraryClasses]
   BaseLib
   DebugLib
-  CmdDBLib
+  RpmhLib
   MemoryAllocationLib
+  IoLib
   BaseMemoryLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
-  DevicePathLib
 
 [Protocols]
-  gEfiCmdDBProtocolGuid
-
+  gEfiCmdDBCrProtocolGuid
+  gEfiRpmhCrProtocolGuid
 [Depex]
-  TRUE
+  gEfiCmdDBCrProtocolGuid

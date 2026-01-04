@@ -20,5 +20,5 @@
 #define log_err(fmt, ...)                                                      \
   DebugPrint(                                                                  \
       DEBUG_ERROR,                                                             \
-      LOG_COLOR_ERROR "[ERROR] " fmt " (in %s:%d)" LOG_COLOR_RESET "\n",       \
+      LOG_COLOR_ERROR "[ERROR] " fmt " (in %a:%d)" LOG_COLOR_RESET "\n",       \
       ##__VA_ARGS__, __FILE__, __LINE__)

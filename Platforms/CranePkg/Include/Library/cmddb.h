@@ -1,9 +1,14 @@
+#pragma once
+
+#include <oskal/common.h>
 #include <oskal/cr_status.h>
 #include <oskal/cr_types.h>
 
 #define CMD_DB_MAX_SLAVES 8
 #define CMD_DB_NUM_ENTRY_PRIORITIES 2
 #define MAX_CMD_DB_AUX_DATA_LENGTH 40
+#define SLAVE_ID_MSK GEN_MSK(18, 16)
+#define RPMH_VRM_ADDRESS_MSK GEN_MSK(19, 4)
 
 // Entries in cmddb resources
 typedef struct {
@@ -53,7 +58,7 @@ VOID DumpCmdDBInfo(IN CmdDbHeader *cmd_db_header);
 CR_STATUS
 GetCmdDBEntryAddressByName(
     IN CmdDbHeader *cmd_db_header, IN CONST CHAR8 *entry_name,
-    OUT UINTN *address);
+    OUT UINT32 *address);
 
 CR_STATUS
 GetCmdDBEntryNameByAddress(
@@ -68,3 +73,16 @@ CR_STATUS
 GetCmdDBAuxDataByAddress(
     IN CmdDbHeader *cmd_db_header, IN UINT32 address, OUT UINT8 *aux_data,
     OUT UINT16 *length);
+
+STATIC inline BOOLEAN CmdDBIsAddrEqual(IN UINT32 Addr1, IN UINT32 Addr2)
+{
+  // Special workaround for VRM
+  if ((Addr1 == Addr2) ||
+      ((GET_FIELD(Addr1, SLAVE_ID_MSK) == RSC_SLAVE_HW_VRM) &&
+          (GET_FIELD(Addr2, RPMH_VRM_ADDRESS_MSK) ==
+           GET_FIELD(Addr1, RPMH_VRM_ADDRESS_MSK)))) {
+    return TRUE;
+  }
+
+  return FALSE;
+}
