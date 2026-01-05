@@ -8,6 +8,7 @@
   # Generic libraries that interact with oskal
   CmdDBLib|CranePkg/Library/CmdDBLib/cmddb.inf
   RpmhLib|CranePkg/Library/RpmhLib/rpmh.inf
+  ClockLib|CranePkg/Library/ClockLib/clock.inf
 
 [Components.common]
   CranePkg/Driver/RpmhCrDxe/RpmhCrDxe.inf

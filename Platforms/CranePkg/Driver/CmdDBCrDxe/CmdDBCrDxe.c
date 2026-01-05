@@ -1,10 +1,17 @@
+/** @file
+ *   Copyright (c) 2025-2026. Project Aloha Authors. All rights reserved.
+ *   Copyright (c) 2025-2026. Kancy Joe. All rights reserved.
+ *   SPDX-License-Identifier: MIT
+ */
+
+#include <Uefi.h>
+
 #include <Library/BaseLib.h>
 #include <Library/DebugLib.h>
 #include <Library/MemoryMapHelperLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiDriverEntryPoint.h>
 #include <Library/cmddb.h>
-#include <Uefi.h>
 
 #include <Protocol/EFICmdDBCrProtocol.h>
 

@@ -1,8 +1,13 @@
-#include <Library/BaseLib.h>
-#include <Library/UefiBootServicesTableLib.h>
-// #include <Library/UefiDriverEntryPoint.h>
+/** @file
+ *   Copyright (c) 2025-2026. Project Aloha Authors. All rights reserved.
+ *   Copyright (c) 2025-2026. Kancy Joe. All rights reserved.
+ *   SPDX-License-Identifier: MIT
+ */
+
 #include <Uefi.h>
 
+#include <Library/BaseLib.h>
+#include <Library/UefiBootServicesTableLib.h>
 #include <oskal/cr_debug.h>
 
 #include <Library/rpmh.h>
@@ -34,18 +39,29 @@ ProtocolRpmhWrite(
 EFI_STATUS
 EFIAPI
 ProtocolRpmhEnableVreg(
-    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST UINT32 Address, IN BOOLEAN Enable)
+    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST CHAR8 *Name, IN BOOLEAN Enable)
 {
   EFI_STATUS Status;
-  if (mRpmhContext == NULL) {
-    log_err("ProtocolRpmhEnableVreg: Failed to get Rpmh Context");
+  UINT32     Address = 0;
+
+  if (mRpmhContext == NULL || mCmdDbProtocol == NULL || Name == NULL) {
+    log_err("%a: Invalid Parameters", __FUNCTION__);
     return EFI_NOT_FOUND;
+  }
+
+  // Get vreg address from cmd db
+  Status =
+      mCmdDbProtocol->GetEntryAddressByName(mCmdDbProtocol, Name, &Address);
+  if (EFI_ERROR(Status)) {
+    log_err(
+        "%a: GetCmdDBEntryAddressByName failed for %a, "
+        "Status=0x%X",
+        __FUNCTION__, Name, Status);
+    return Status;
   }
   Status = RpmhEnableVreg(mRpmhContext, Address, Enable);
   if (CR_ERROR(Status)) {
-    log_err(
-        "ProtocolRpmhEnableVreg: RpmhEnableVreg failed with status 0x%X",
-        Status);
+    log_err("%a: RpmhEnableVreg failed with status 0x%X", __FUNCTION__, Status);
     return EFI_DEVICE_ERROR;
   }
   return EFI_SUCCESS;
@@ -54,20 +70,23 @@ ProtocolRpmhEnableVreg(
 EFI_STATUS
 EFIAPI
 ProtocolRpmhSetVregVoltage(
-    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST UINT32 Address,
+    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST CHAR8 *Name,
     IN CONST UINT32 VoltageMv)
 {
   EFI_STATUS Status;
-  if (mRpmhContext == NULL) {
-    log_err("ProtocolRpmhSetVregVoltage: Failed to get Rpmh Context");
+  UINT32     Address = 0;
+
+  if (mRpmhContext == NULL || mCmdDbProtocol == NULL || Name == NULL) {
+    log_err("%a: Invalid Parameters", __FUNCTION__);
     return EFI_NOT_FOUND;
   }
+
   Status = RpmhSetVregVoltage(mRpmhContext, Address, VoltageMv);
   if (CR_ERROR(Status)) {
     log_err(
-        "ProtocolRpmhSetVregVoltage: RpmhSetVregVoltage failed with status "
+        "%a: RpmhSetVregVoltage failed with status "
         "0x%X",
-        Status);
+        __FUNCTION__, Status);
     return EFI_DEVICE_ERROR;
   }
   return EFI_SUCCESS;
@@ -76,18 +95,31 @@ ProtocolRpmhSetVregVoltage(
 EFI_STATUS
 EFIAPI
 ProtocolRpmhSetVregMode(
-    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST UINT32 Address, IN CONST UINT8 Mode)
+    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST CHAR8 *Name, IN CONST UINT8 Mode)
 {
   EFI_STATUS Status;
-  if (mRpmhContext == NULL) {
-    log_err("ProtocolRpmhSetVregMode: Failed to get Rpmh Context");
+  UINT32     Address = 0;
+
+  if (mRpmhContext == NULL || mCmdDbProtocol == NULL || Name == NULL) {
+    log_err("%a: Invalid Parameters", __FUNCTION__);
     return EFI_NOT_FOUND;
   }
+
+  // Get vreg address from cmd db
+  Status =
+      mCmdDbProtocol->GetEntryAddressByName(mCmdDbProtocol, Name, &Address);
+  if (EFI_ERROR(Status)) {
+    log_err(
+        "%a: GetCmdDBEntryAddressByName failed for %a, "
+        "Status=0x%X",
+        __FUNCTION__, Name, Status);
+    return Status;
+  }
+
   Status = RpmhSetVregMode(mRpmhContext, Address, Mode);
   if (CR_ERROR(Status)) {
     log_err(
-        "ProtocolRpmhSetVregMode: RpmhSetVregMode failed with status 0x%X",
-        Status);
+        "%a: RpmhSetVregMode failed with status 0x%X", __FUNCTION__, Status);
     return EFI_DEVICE_ERROR;
   }
   return EFI_SUCCESS;

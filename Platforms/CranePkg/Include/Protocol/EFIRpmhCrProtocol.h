@@ -1,3 +1,9 @@
+/** @file
+ *   Copyright (c) 2025-2026. Project Aloha Authors. All rights reserved.
+ *   Copyright (c) 2025-2026. Kancy Joe. All rights reserved.
+ *   SPDX-License-Identifier: MIT
+ */
+
 #pragma once
 
 #define EFI_RPMH_CR_PROTOCOL_REVISION 0x0000000000010000
@@ -13,14 +19,14 @@ typedef EFI_STATUS(EFIAPI *EFI_RPMH_CR_WRITE)(
     IN EFI_RPMH_CR_PROTOCOL *This, IN RpmhTcsCmd *TcsCmd, IN UINT32 NumCmds);
 
 typedef EFI_STATUS(EFIAPI *EFI_RPMH_CR_ENABLE_VREG)(
-    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST UINT32 Address, IN BOOLEAN Enable);
+    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST CHAR8 *Name, IN BOOLEAN Enable);
 
 typedef EFI_STATUS(EFIAPI *EFI_RPMH_CR_SET_VREG_VOLTAGE)(
-    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST UINT32 Address,
+    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST CHAR8 *Name,
     IN CONST UINT32 VoltageMv);
 
 typedef EFI_STATUS(EFIAPI *EFI_RPMH_CR_SET_VREG_MODE)(
-    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST UINT32 Address,
+    IN EFI_RPMH_CR_PROTOCOL *This, IN CONST CHAR8 *Name,
     IN CONST UINT8 Mode);
 
 typedef struct _EFI_RPMH_CR_PROTOCOL {
