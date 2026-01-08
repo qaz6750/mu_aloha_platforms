@@ -8,4 +8,11 @@
 
 #include <Uefi.h>
 
-#define CR_ASSERT(exp) ASSERT(exp)
+#define CR_ASSERT(exp)                                                         \
+  do {                                                                         \
+    ASSERT(exp);                                                               \
+    while (!(exp)) {                                                              \
+      /* WFE mode - Wait For Event */                                          \
+      asm volatile("wfe");                                                     \
+    }                                                                          \
+  } while (0)

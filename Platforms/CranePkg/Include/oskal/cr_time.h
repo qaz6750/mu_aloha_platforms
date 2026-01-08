@@ -7,6 +7,7 @@
 #pragma once
 #include <Library/TimerLib.h>
 
+// Please add TimerLib to inf before using this macro
 #define cr_sleep(us)                                                           \
   do {                                                                         \
     MicroSecondDelay(us);                                                      \

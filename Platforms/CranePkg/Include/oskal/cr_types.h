@@ -5,5 +5,6 @@
  */
 
 #pragma once
-
 #include <Uefi.h>
+
+#define TO_BOOL(x) ((x) ? TRUE : FALSE)

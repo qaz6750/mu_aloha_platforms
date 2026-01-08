@@ -28,3 +28,10 @@ cr_strncmp(const CHAR8 *str1, const CHAR8 *str2, UINTN len)
 {
   return AsciiStrnCmp(str1, str2, len);
 }
+
+// strcpm wrapper
+STATIC inline INTN
+cr_strcmp(const CHAR8 *str1, const CHAR8 *str2)
+{
+  return AsciiStrCmp(str1, str2);
+}
