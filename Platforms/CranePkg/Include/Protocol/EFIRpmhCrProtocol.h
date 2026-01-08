@@ -6,6 +6,9 @@
 
 #pragma once
 
+#include <oskal/cr_types.h>
+#include <Library/rpmh.h>
+
 #define EFI_RPMH_CR_PROTOCOL_REVISION 0x0000000000010000
 
 #define EFI_RPMH_CR_PROTOCOL_GUID                                              \

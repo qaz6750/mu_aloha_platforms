@@ -5,7 +5,7 @@
  */
 
 #pragma once
-#include <Library/CrTargetLib.h>
+#include <Library/CrTargetRpmhLib.h>
 #include <Library/cmddb.h>
 #include <Library/rpmh.h>
 
