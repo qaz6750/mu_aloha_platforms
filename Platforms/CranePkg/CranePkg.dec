@@ -7,6 +7,9 @@
 [Includes.common]
   Include                        # Root include for the package
 
+[LibraryClasses]
+  DebugccLib
+
 [Guids.common]
   gCranePkgTokenSpaceGuid   = { 0x156187ca, 0x0355, 0x4247, { 0x23, 0x33, 0xe4, 0xfc, 0xcf, 0xf8, 0x60, 0x0f } }
 

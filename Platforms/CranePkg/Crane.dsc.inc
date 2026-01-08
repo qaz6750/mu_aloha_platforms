@@ -1,6 +1,7 @@
 [LibraryClasses.common]
   # OS/Kernel Abstract Layer Libs
   OskInterruptLib|CranePkg/Library/OskInterruptLib/oskinterrupt.inf
+  OskMemmapLib|CranePkg/Library/OskMemmapLib/oskmemmap.inf
 
   # Platform specific data
   CrTargetLib|QcomPkg/Library/CrTargetLib/CrTargetLib.inf
@@ -11,5 +12,6 @@
   ClockLib|CranePkg/Library/ClockLib/clock.inf
 
 [Components.common]
-  CranePkg/Driver/RpmhCrDxe/RpmhCrDxe.inf
   CranePkg/Driver/CmdDBCrDxe/CmdDBCrDxe.inf
+  CranePkg/Driver/RpmhCrDxe/RpmhCrDxe.inf
+  CranePkg/Driver/ClockCrDxe/ClockCrDxe.inf
