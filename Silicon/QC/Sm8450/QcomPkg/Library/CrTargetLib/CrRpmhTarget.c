@@ -1,5 +1,7 @@
-#include <Library/CrTargetLib.h>
+#include <Library/CrTargetRpmhLib.h>
 #include <oskal/common.h>
+
+// Reference to device tree.
 
 // Rpmh platform specific Target Information
 STATIC RpmhDeviceContext RpmhContext = {

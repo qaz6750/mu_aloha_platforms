@@ -9,6 +9,8 @@
 [Sources]
   CrTarget.c
   CrRpmhTarget.c
+  CrClockTarget.c
+  CrClockDebugTargetWaipio.c
 
 [Packages]
   MdePkg/MdePkg.dec
