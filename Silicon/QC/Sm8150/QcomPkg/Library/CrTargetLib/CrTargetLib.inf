@@ -1,0 +1,19 @@
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = CrTargetLib
+  FILE_GUID                      = baea3ef8-b384-40e4-88af-3c7e4c3a549b
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = CrTargetLib
+
+[Sources]
+  CrTarget.c
+  CrDebugUartTarget.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  QcomPkg/QcomPkg.dec
+  CranePkg/CranePkg.dec
+
+[LibraryClasses]
+  BaseLib
