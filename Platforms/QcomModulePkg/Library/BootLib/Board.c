@@ -230,10 +230,8 @@ GetPlatformInfo (struct BoardInfo *platform_board_info)
 
   if (platform_board_info->PlatformInfo.platform >=
       EFI_PLATFORMINFO_NUM_TYPES) {
-    AsciiPrint ("Error: Unknown platform type (%d).\n",
+    AsciiPrint ("Warning: Unknown platform type (%d).\n",
                 platform_board_info->PlatformInfo.platform);
-    eResult = EFI_PROTOCOL_ERROR;
-    goto endtest;
   }
 
   DEBUG ((EFI_D_VERBOSE, "Platform Info : 0x%x\n",
