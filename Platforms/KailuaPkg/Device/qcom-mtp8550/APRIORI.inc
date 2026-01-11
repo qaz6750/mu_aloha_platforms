@@ -40,10 +40,10 @@ APRIORI DXE {
             SECTION UI = "ShmBridgeDxe"
     }
 
-    # INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TzDxe/ScmDxeLA_Kailua.inf
+    # INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TzDxe/ScmDxeLA_CompatEnabled.inf
     FILE DRIVER = 16E48F1F-7944-4BAA-BCA5-2D0CB788A904 {
-            SECTION PE32 = $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TzDxe/ScmDxeLA_Kailua.efi
-            SECTION UI = "ScmDxeLA_Kailua"
+            SECTION PE32 = $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TzDxe/ScmDxeLA_CompatEnabled.efi
+            SECTION UI = "ScmDxeLA_CompatEnabled"
     }
 
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TLMMDxe/TLMMDxe.inf

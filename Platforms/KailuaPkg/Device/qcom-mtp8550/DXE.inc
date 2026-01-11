@@ -33,8 +33,8 @@ INF QcomPkg/PatchedBinaries/ClockDxe.inf
 INF QcomPkg/PatchedBinaries/PmicDxeLa.inf
 
 FILE DRIVER = 16E48F1F-7944-4BAA-BCA5-2D0CB788A904 {
-    SECTION PE32 = $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TzDxe/ScmDxeLA_Kailua.efi
-    SECTION UI = "ScmDxeLA_Kailua"
+    SECTION PE32 = $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TzDxe/ScmDxeLA_CompatEnabled.efi
+    SECTION UI = "ScmDxeLA_CompatEnabled"
 }
 
 FILE DRIVER = CF6DFC66-14AB-4E13-84DB-9C02912D1404 {
