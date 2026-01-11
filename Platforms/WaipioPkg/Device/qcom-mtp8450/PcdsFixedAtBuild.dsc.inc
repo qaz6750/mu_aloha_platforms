@@ -16,11 +16,11 @@ gAndromedaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"SM8450"
 gAndromedaPkgTokenSpaceGuid.PcdABLProduct|"waipio"
 
 [PcdsDynamicDefault.common]
-gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1920
-gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|1080
-gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|1920
-gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|1080
-gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn|240     # = 1920 / EFI_GLYPH_WIDTH(8)
-gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|56         # = 1080 / EFI_GLYPH_HEIGHT(19)
-gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|240          # = 1920 / EFI_GLYPH_WIDTH(8)
-gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|56              # = 1080 / EFI_GLYPH_HEIGHT(19)
+gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1080
+gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|2340
+gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|1080
+gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|2340
+gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn|99  # = 1080 / EFI_GLYPH_WIDTH(8)
+gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|123    # = 2340 / EFI_GLYPH_HEIGHT(19)
+gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|99       # = 1080 / EFI_GLYPH_WIDTH(8)
+gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|123         # = 2340 / EFI_GLYPH_HEIGHT(19)
