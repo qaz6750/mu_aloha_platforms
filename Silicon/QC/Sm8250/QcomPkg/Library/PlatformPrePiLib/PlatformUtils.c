@@ -8,10 +8,9 @@
 #include <PiPei.h>
 
 #include <Library/IoLib.h>
-#include <Library/MemoryMapHelperLib.h>
 #include <Library/PlatformPrePiLib.h>
+#include <Library/QcomMmuDetachHelperLib.h>
 
-#include "MmuDetach.h"
 #include "PlatformUtils.h"
 
 VOID SetWatchdogState(BOOLEAN Enable)

@@ -9,8 +9,8 @@
 
 #include <Uefi.h>
 
-#include "MmuDetach.h"
-#include "MmuDetachInternal.h"
+#include <Library/QcomMmuDetachHelperLib.h>
+#include "QcomMmuDetachHelperLibInternal.h"
 
 #include <Library/BaseLib.h>
 #include <Library/IoLib.h>
