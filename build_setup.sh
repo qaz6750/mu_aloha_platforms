@@ -13,3 +13,5 @@ alias nuget="mono /usr/local/bin/nuget.exe"
 #cargo add cargo-tarpaulin
 
 export CLANGPDB_BIN=/usr/lib/llvm-38/bin/ && export CLANGPDB_AARCH64_PREFIX=aarch64-linux-gnu-
+
+chmod +x ./timebuild.sh && ./timebuild.sh
