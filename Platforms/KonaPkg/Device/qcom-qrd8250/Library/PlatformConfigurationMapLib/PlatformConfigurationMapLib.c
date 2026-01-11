@@ -9,7 +9,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"EarlyInitCoreCnt", 1},
     {"EnableThreadDispOpti", 0x0},
     {"EnableLogFsSyncInRetail", 0x0},
-    {"EnableMultiThreading", 1},
+    {"EnableMultiThreading", 0},
     {"EnableSDHCSwitch", 0x1},
     {"EnableShell", 0x1},
     {"EnableUefiSecAppDebugLogDump", 0x0},
