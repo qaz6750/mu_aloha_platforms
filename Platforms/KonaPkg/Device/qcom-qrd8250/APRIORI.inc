@@ -4,6 +4,7 @@ APRIORI DXE {
     INF MdeModulePkg/Core/Dxe/DxeMain.inf
     INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
 
+    INF KonaPkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/EnvDxe/EnvDxe.inf
     INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
 
     # Next, install cpu protocol and enable the interrupt controller
@@ -13,6 +14,7 @@ APRIORI DXE {
     # Core Drivers
     INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
     INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+    INF AndromedaPkg/Driver/RamPartitionDxe/RamPartitionDxe.inf
     INF KonaPkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/SmemDxe/SmemDxe.inf
     INF KonaPkg/Device/$(TARGET_DEVICE)/PatchedBinaries/DALSYSDxe.inf
     INF KonaPkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/HWIODxe/HWIODxe.inf
