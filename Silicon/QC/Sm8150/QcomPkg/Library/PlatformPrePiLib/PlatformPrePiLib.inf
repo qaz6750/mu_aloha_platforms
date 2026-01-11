@@ -19,3 +19,6 @@
   IoLib
   TimerLib
   MemoryMapHelperLib
+
+[FixedPcd]
+  gAndromedaPkgTokenSpaceGuid.PcdSMMUSIDsToKeep  # CONSUMES

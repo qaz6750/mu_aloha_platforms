@@ -25,3 +25,4 @@
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdGicRedistributorsBase
+  gAndromedaPkgTokenSpaceGuid.PcdSMMUSIDsToKeep  # CONSUMES

@@ -187,6 +187,9 @@ static VOID smmu_v2_detach_all(ARM_SMMU_V2_DEVICE *smmuDevice)
   UINT32 ContextBanks[16]; // Track context banks used
   UINT32 NumContextBanks = 0;
 
+  UINT16 *SMMUSIDsToKeep     = (UINT16 *)FixedPcdGetPtr(PcdSMMUSIDsToKeep);
+  UINT32  SMMUSIDsToKeepSize = (UINT32)FixedPcdGetSize(PcdSMMUSIDsToKeep);
+
   UINT32 id0     = arm_smmu_gr0_read(smmuDevice, ARM_SMMU_GR0_ID0);
   UINT32 numsmrg = (id0 >> 0) & 0xFF;
 
@@ -209,19 +212,22 @@ static VOID smmu_v2_detach_all(ARM_SMMU_V2_DEVICE *smmuDevice)
 
       // Skip MDP related StreamIDs
       // Check if StreamID matches (compare low 16 bits masked)
-      if ((0x0800 & ~smr_mask) == masked_smr_id ||
-          (0x0820 & ~smr_mask) == masked_smr_id ||
-          (0x0801 & ~smr_mask) == masked_smr_id ||
-          (0x0821 & ~smr_mask) == masked_smr_id ||
-          (0x0C00 & ~smr_mask) == masked_smr_id ||
-          (0x0C20 & ~smr_mask) == masked_smr_id ||
-          (0x0C01 & ~smr_mask) == masked_smr_id ||
-          (0x0C21 & ~smr_mask) == masked_smr_id) {
+      BOOLEAN ShouldSkipSID = FALSE;
+      if ((SMMUSIDsToKeepSize % sizeof(UINT16)) == 0) {
+        for (UINT32 j = 0; j < SMMUSIDsToKeepSize / sizeof(UINT16); j++) {
+          UINT16 SIDToKeep = SMMUSIDsToKeep[j];
+          if ((SIDToKeep & ~smr_mask) == masked_smr_id) {
+            ShouldSkipSID = TRUE;
+            break;
+          }
+        }
+      }
 
+      if (ShouldSkipSID) {
         BOOLEAN AlreadyTracked = FALSE;
 
-        for (UINT32 i = 0; i < NumContextBanks; i++) {
-          if (ContextBanks[i] == cbndx) {
+        for (UINT32 j = 0; j < NumContextBanks; j++) {
+          if (ContextBanks[j] == cbndx) {
             AlreadyTracked = TRUE;
             break;
           }

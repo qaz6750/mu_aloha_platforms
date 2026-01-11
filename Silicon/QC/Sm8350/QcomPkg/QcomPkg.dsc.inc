@@ -34,6 +34,13 @@
   # UART
   gAndromedaPkgTokenSpaceGuid.PcdUartSerialBase|0x0098C000
 
+  # Keep MDP Stream IDs attached by default
+  gAndromedaPkgTokenSpaceGuid.PcdSMMUSIDsToKeep|{
+    0x08, 0x20,
+    0x08, 0x21,
+    0x0C, 0x21
+  }
+
 [LibraryClasses.common]
   # Move PlatformMemoryMapLib to Device/<device>/Library
   # And moved this Line to SurfaceDuo2.dsc
