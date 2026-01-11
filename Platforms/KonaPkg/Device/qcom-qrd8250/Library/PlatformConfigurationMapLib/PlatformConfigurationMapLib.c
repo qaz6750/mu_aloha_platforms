@@ -13,7 +13,7 @@ static CONFIGURATION_DESCRIPTOR_EX gDeviceConfigurationDescriptorEx[] = {
     {"EnableSDHCSwitch", 0x1},
     {"EnableShell", 0x1},
     {"EnableUefiSecAppDebugLogDump", 0x0},
-    {"EnableUfsIOC", 1},
+    {"EnableUfsIOC", 0}, // TODO: Fix this!
     {"MaxCoreCnt", 8},
     {"MaxLogFileSize", 0x400000},
     {"NumActiveCores", 8},

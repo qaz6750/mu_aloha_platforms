@@ -16,4 +16,3 @@
 [LibraryClasses]
   BaseLib
   IoLib
-  QcomMmuDetachHelperLib

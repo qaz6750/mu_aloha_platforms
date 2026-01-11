@@ -9,7 +9,6 @@
 
 #include <Library/IoLib.h>
 #include <Library/PlatformPrePiLib.h>
-#include <Library/QcomMmuDetachHelperLib.h>
 
 #include "PlatformUtils.h"
 
@@ -22,6 +21,4 @@ VOID PlatformInitialize(VOID)
 {
   // Disable WatchDog Timer
   SetWatchdogState(FALSE);
-
-  MmuDetach();
 }
