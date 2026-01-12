@@ -1,0 +1,21 @@
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = SmemSecLib
+  FILE_GUID                      = C199550B-5AC9-4843-B436-A6DF6186AC16
+  MODULE_TYPE                    = BASE
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = SmemSecLib
+
+[Sources]
+  smem.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  QcomPkg/QcomPkg.dec
+  AndromedaPkg/AndromedaPkg.dec
+  CranePkg/CranePkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryMapHelperLib

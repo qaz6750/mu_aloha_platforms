@@ -1,0 +1,134 @@
+#include <Uefi.h>
+
+#define SMEM_SOCINFO_BUILD_ID_STR_LENGTH 32
+#define SMEM_SOCINFO_CHIP_ID_STR_LENGTH 32
+
+#define SMEM_HW_SW_BUILD_ID 137
+#define SMEM_IMAGE_VERSION_TABLE_ID 469
+
+enum SmemSocInfoHwPlatform {
+  SMEM_SOC_INFO_HW_PLATFORM_UNKNOWN = 0,
+  SMEM_SOC_INFO_HW_PLATFORM_SURF = 1,
+  SMEM_SOC_INFO_HW_PLATFORM_FFA = 2,
+  SMEM_SOC_INFO_HW_PLATFORM_FLUID = 3,
+  SMEM_SOC_INFO_HW_PLATFORM_SVLTE_FFA = 4,
+  SMEM_SOC_INFO_HW_PLATFORM_SVLTE_SURF = 5,
+  SMEM_SOC_INFO_HW_PLATFORM_MTP_MDM = 7,
+  SMEM_SOC_INFO_HW_PLATFORM_MTP = 8,
+  SMEM_SOC_INFO_HW_PLATFORM_LIQUID = 9,
+  // Dragonboard platform id is assigned as 10 in CDT
+  SMEM_SOC_INFO_HW_PLATFORM_DRAGON = 10,
+  SMEM_SOC_INFO_HW_PLATFORM_QRD = 11,
+  SMEM_SOC_INFO_HW_PLATFORM_HRD = 13,
+  SMEM_SOC_INFO_HW_PLATFORM_DTV = 14,
+  SMEM_SOC_INFO_HW_PLATFORM_RCM = 21,
+  SMEM_SOC_INFO_HW_PLATFORM_STP = 23,
+  SMEM_SOC_INFO_HW_PLATFORM_SBC = 24,
+  SMEM_SOC_INFO_HW_PLATFORM_HDK = 31,
+  SMEM_SOC_INFO_HW_PLATFORM_ATP = 33,
+  SMEM_SOC_INFO_HW_PLATFORM_IDP = 34,
+  SMEM_SOC_INFO_HW_PLATFORM_QXR = 38,
+  SMEM_SOC_INFO_HW_PLATFORM_INVALID
+};
+
+STATIC const char *SmemSocInfoHwPlatformStr[] = {
+    [SMEM_SOC_INFO_HW_PLATFORM_UNKNOWN] = "Unknown",
+    [SMEM_SOC_INFO_HW_PLATFORM_SURF] = "Surf",
+    [SMEM_SOC_INFO_HW_PLATFORM_FFA] = "FFA",
+    [SMEM_SOC_INFO_HW_PLATFORM_FLUID] = "Fluid",
+    [SMEM_SOC_INFO_HW_PLATFORM_SVLTE_FFA] = "SVLTE_FFA",
+    [SMEM_SOC_INFO_HW_PLATFORM_SVLTE_SURF] = "SLVTE_SURF",
+    [SMEM_SOC_INFO_HW_PLATFORM_MTP_MDM] = "MDM_MTP_NO_DISPLAY",
+    [SMEM_SOC_INFO_HW_PLATFORM_MTP] = "MTP",
+    [SMEM_SOC_INFO_HW_PLATFORM_RCM] = "RCM",
+    [SMEM_SOC_INFO_HW_PLATFORM_LIQUID] = "Liquid",
+    [SMEM_SOC_INFO_HW_PLATFORM_DRAGON] = "Dragon",
+    [SMEM_SOC_INFO_HW_PLATFORM_QRD] = "QRD",
+    [SMEM_SOC_INFO_HW_PLATFORM_HRD] = "HRD",
+    [SMEM_SOC_INFO_HW_PLATFORM_DTV] = "DTV",
+    [SMEM_SOC_INFO_HW_PLATFORM_STP] = "STP",
+    [SMEM_SOC_INFO_HW_PLATFORM_SBC] = "SBC",
+    [SMEM_SOC_INFO_HW_PLATFORM_HDK] = "HDK",
+    [SMEM_SOC_INFO_HW_PLATFORM_ATP] = "ATP",
+    [SMEM_SOC_INFO_HW_PLATFORM_IDP] = "IDP",
+    [SMEM_SOC_INFO_HW_PLATFORM_QXR] = "QXR",
+};
+
+// Socinfo item structure in SMEM
+typedef struct {
+  UINT32 Format;
+  UINT32 Id;
+  UINT32 Version;
+  CHAR8 BuildID[SMEM_SOCINFO_BUILD_ID_STR_LENGTH];
+  // Version 2
+  UINT32 RawId;
+  UINT32 RawVer;
+  // Version 3
+  UINT32 HwPlatform;
+  // Version 4
+  UINT32 PlatformVersion;
+  // Version 5
+  UINT32 AccessoryChip;
+  // Version 6
+  UINT32 HwPlatSubtype;
+  // Version 7
+  UINT32 PmicModel;
+  UINT32 PmicDieRev;
+  // Version 8
+  UINT32 PmicModel1;
+  UINT32 PmicDieRev1;
+  UINT32 PmicModel2;
+  UINT32 PmicDieRev2;
+  // Version 9
+  UINT32 FoundryId;
+  // Version 10
+  UINT32 SerialNumber;
+  // Version 11
+  UINT32 NumPmics;
+  UINT32 PmicArrayOffset;
+  // Version 12
+  UINT32 ChipFamily;
+  UINT32 RawDeviceFamily;
+  UINT32 RawDeviceNum;
+  // Version 13
+  UINT32 NProductId;
+  CHAR8 ChipId[SMEM_SOCINFO_CHIP_ID_STR_LENGTH];
+  // Version 14
+  UINT32 NumClusters;
+  UINT32 NclusterArrayOffset;
+  UINT32 NumSubsetParts;
+  UINT32 NsubsetPartsArrayOffset;
+  // Version 15
+  UINT32 NmodemSupported;
+  // Version 16
+  UINT32 FeatureCode;
+  UINT32 Pcode;
+  UINT32 NpartnamemapOffset;
+  UINT32 NnumPartnameMapping;
+  // Version 17
+  UINT32 OemVariant;
+  // Version 18
+  UINT32 NumKvps;
+  UINT32 KvpsOffset;
+  // Version 19
+  UINT32 NumFuncClusters;
+  UINT32 BootCluster;
+  UINT32 BootCore;
+  // Version 20
+  UINT32 RawPackageType;
+  // Version 21/22/23
+  UINT32 Reserved[4];
+} SmemSocInfo;
+
+// Qcom Internal chip feature codes
+enum SmemSocInfoFeatureCode {
+  SMEM_SOCINFO_FC_UNKNOWN = 0x0,
+  SMEM_SOCINFO_FC_AA,
+  SMEM_SOCINFO_FC_AB,
+  SMEM_SOCINFO_FC_AC,
+  SMEM_SOCINFO_FC_AD,
+  SMEM_SOCINFO_FC_AE,
+  SMEM_SOCINFO_FC_AF,
+  SMEM_SOCINFO_FC_AG,
+  SMEM_SOCINFO_FC_AH,
+};

@@ -351,9 +351,6 @@
 
   MemoryMapHelperLib|AndromedaPkg/Library/MemoryMapHelperSecLib/MemoryMapHelperSecLib.inf
   ConfigurationMapHelperLib|AndromedaPkg/Library/ConfigurationMapHelperSecLib/ConfigurationMapHelperSecLib.inf
-## Patch: Import a finder lib to get protocol address
-  SecProtocolFinderLib|AndromedaPkg/Library/QcSecProtocolsLocatorSecLib/QcSecProtocolsLocatorSecLib.inf
-##
   ShLib|AndromedaPkg/Library/ShLib/ShLib.inf
   UefiCfgLib|AndromedaPkg/Library/UefiCfgLib/UefiCfgLib.inf
 
@@ -398,6 +395,10 @@
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuPeiLib.inf
   MemoryMapHelperLib|AndromedaPkg/Library/MemoryMapHelperSecLib/MemoryMapHelperSecLib.inf
   ConfigurationMapHelperLib|AndromedaPkg/Library/ConfigurationMapHelperSecLib/ConfigurationMapHelperSecLib.inf
+  SmemSecLib|AndromedaPkg/Library/SmemSecLib/SmemSecLib.inf
+## Patch: A finder lib to get protocol address
+  SecProtocolFinderLib|AndromedaPkg/Library/QcSecProtocolsLocatorSecLib/QcSecProtocolsLocatorSecLib.inf
+##
 
 [LibraryClasses.common.DXE_CORE]
   DxeCoreEntryPoint|MdePkg/Library/DxeCoreEntryPoint/DxeCoreEntryPoint.inf
