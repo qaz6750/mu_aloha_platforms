@@ -13,6 +13,7 @@
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
+#include <Library/SmemSecLib.h>
 #include "PlatformPeiLibInternal.h"
 
 STATIC
@@ -139,6 +140,7 @@ VOID InstallPlatformHob()
 
   if (!initialized) {
     ARM_MEMORY_REGION_DESCRIPTOR_EX InfoBlk;
+    SmemLibContext smem_ctx = {0};
     LocateMemoryMapAreaByName("Info Blk", &InfoBlk);
 
     UINTN InfoBlkAddress = InfoBlk.Address;
@@ -148,6 +150,10 @@ VOID InstallPlatformHob()
     BuildGuidDataHob(
         &gEfiInfoBlkHobGuid, &InfoBlkAddress, sizeof(InfoBlkAddress));
     BuildGuidDataHob(&gEfiShLibHobGuid, &ShLibAddress, sizeof(ShLibAddress));
+
+    // Init smem library
+    SmemLibInit(&smem_ctx);
+    // TODO Get & pack smbios info from smem
 
     initialized = 1;
   }
