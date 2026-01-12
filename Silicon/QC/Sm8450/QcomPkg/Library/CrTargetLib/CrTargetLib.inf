@@ -11,6 +11,7 @@
   CrRpmhTarget.c
   CrClockTarget.c
   CrClockDebugTargetWaipio.c
+  CrDebugUartTarget.c
 
 [Packages]
   MdePkg/MdePkg.dec
