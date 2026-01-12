@@ -33,7 +33,7 @@
   USE_PHYSICAL_TIMER             = 1
 
   USE_SCREEN_FOR_SERIAL_OUTPUT    = 0
-  USE_UART_GENI_FOR_SERIAL_OUTPUT = 0
+  USE_UART_GENI_FOR_SERIAL_OUTPUT = 1
   USE_UART_DM_FOR_SERIAL_OUTPUT   = 0
   USE_MEMORY_FOR_SERIAL_OUTPUT    = 0
 
@@ -94,6 +94,11 @@
 !endif
   AndromedaPkg/Driver/GpioButtons/GpioButtons.inf
 
+  # This Driver is conflict with uart debuglib
+!if $(USE_UART_GENI_FOR_SERIAL_OUTPUT) == 0
+  CranePkg/Driver/DebugUartSerialCrDxe/DebugUartSerialCrDxe.inf
+!endif
+
   # Device Specific Drivers
 !include SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/DXE.dsc.inc
 
@@ -103,6 +108,13 @@
 
   # Notice: PlatformConfigurationMapLib was moved to Device/<device>/Library/
   PlatformConfigurationMapLib|SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Library/PlatformConfigurationMapLib/PlatformConfigurationMapLib.inf
+
+  # Platform specific data
+  CrTargetLib|QcomPkg/Library/CrTargetLib/CrTargetLib.inf
+  # OS/Kernel Abstract Layer Libs
+  OskInterruptLib|CranePkg/Library/OskInterruptLib/oskinterrupt.inf
+  # Generic libraries that interact with oskal
+  DebugUartLib|CranePkg/Library/DebugUartLib/debug_uart.inf
 
 !include QcomPkg/QcomPkg.dsc.inc
 !include SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/PcdsFixedAtBuild.dsc.inc
