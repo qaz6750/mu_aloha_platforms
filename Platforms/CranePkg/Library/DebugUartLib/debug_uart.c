@@ -18,9 +18,9 @@ VOID MsmGeniSerialIsr(VOID *Params)
   StatusSIrq = CrMmioRead32(
       DebugUartContext->BaseAddress + DEBUG_UART_GENI_S_IRQ_STATUS);
 
-  // log_info(
-  //     "MsmGeniSerialIsr called, StatusMIrq=0x%X, StatusSIrq=0x%X", StatusMIrq,
-  //     StatusSIrq);
+//  log_info(
+//      "MsmGeniSerialIsr called, StatusMIrq=0x%X, StatusSIrq=0x%X", StatusMIrq,
+//      StatusSIrq);
 
   // Clear the IRQ
   CrMmioWrite32(
@@ -35,9 +35,9 @@ VOID MsmGeniSerialIsr(VOID *Params)
   }
 
   if (StatusSIrq & DEBUG_UART_GENI_S_RX_FIFO_WR_ERR_EN) {
-    log_warn(
-        "Debug UART Buffer Overrun. StatusMIrq=0x%X, StatusSIrq=0x%X",
-        StatusMIrq, StatusSIrq);
+//    log_warn(
+//        "Debug UART Buffer Overrun. StatusMIrq=0x%X, StatusSIrq=0x%X",
+//        StatusMIrq, StatusSIrq);
   }
 
   if (StatusMIrq & DEBUG_UART_GENI_M_CMD_DONE_EN) {

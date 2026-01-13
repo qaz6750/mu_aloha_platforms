@@ -114,20 +114,17 @@ SerialRead(
 {
   (VOID) This;
   if (BufferSize == NULL || Buffer == NULL)
-    return EFI_INVALID_PARAMETER;
+    goto exit;
 
-  if (mDebugUartContext == NULL || mDebugUartContext->InputBuffer == NULL) {
+  if (mDebugUartContext == NULL || mDebugUartContext->InputBuffer == NULL || *BufferSize == 0) {
     *BufferSize = 0;
-    return EFI_NOT_READY;
+    goto exit;
   }
-
-  if (*BufferSize == 0)
-    return EFI_SUCCESS;
 
   UINTN Available = (UINTN)mDebugUartContext->InputBufferSize;
   if (Available == 0) {
     *BufferSize = 0;
-    return EFI_NOT_READY;
+    goto exit;
   }
 
   UINTN ToRead = (*BufferSize < Available) ? *BufferSize : Available;
@@ -144,6 +141,7 @@ SerialRead(
   mDebugUartContext->InputBufferSize = (UINT32)(Available - ToRead);
   *BufferSize                        = ToRead;
 
+exit:
   return EFI_SUCCESS;
 }
 
