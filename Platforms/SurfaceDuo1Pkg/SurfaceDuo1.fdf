@@ -94,13 +94,6 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
 
-  # This Driver is conflict with uart debuglib and serialdxe
-!if $(USE_UART_GENI_FOR_SERIAL_OUTPUT) == 0
-  INF  CranePkg/Driver/DebugUartSerialCrDxe/DebugUartSerialCrDxe.inf
-!else
-  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
-!endif
-
   # HID Support
   INF HidPkg/HidKeyboardDxe/HidKeyboardDxe.inf
   INF HidPkg/HidMouseAbsolutePointerDxe/HidMouseAbsolutePointerDxe.inf

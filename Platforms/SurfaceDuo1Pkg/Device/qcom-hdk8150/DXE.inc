@@ -90,6 +90,13 @@ INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Application/QcomChar
 #INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/SimpleTextInOutSerialDxe/SimpleTextInOutSerial.inf
 #INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/ShmBridgeDxe/ShmBridgeDxeLA.inf
 
+# This Driver is conflict with uart debuglib and serialdxe
+!if $(USE_UART_GENI_FOR_SERIAL_OUTPUT) == 1
+  INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
+!else
+  INF  CranePkg/Driver/DebugUartSerialCrDxe/DebugUartSerialCrDxe.inf
+!endif
+
 # Patched Binaries
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/HALIOMMUDxe/HALIOMMUDxe.inf
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/UFSDxe/UFSDxe.inf
