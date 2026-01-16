@@ -113,6 +113,7 @@ EFI_GPIO_CR_PROTOCOL gGpioCrProtocol = {
     .InitGpioConfigParams = ProtocolGpioInitConfigParams,
     .ConfigGpio           = ProtocolGpioConfig,
     .GetGpioConfig        = ProtocolGpioGetConfig,
+    .RegisterGpioInterrupt = ProtocolGpioRegisterGpioInterrupt,
 };
 
 // For test use.
@@ -274,7 +275,7 @@ GpioEntryPoint(IN EFI_HANDLE ImageHandle, IN EFI_SYSTEM_TABLE *SystemTable)
 #endif
 
 // Protocol test cases (hdk8450)
-#if 1
+#if 0
   {
     EFI_GPIO_CR_PROTOCOL *GpioProtocol = NULL;
     GpioConfigParams      ConfigParams = {0};
