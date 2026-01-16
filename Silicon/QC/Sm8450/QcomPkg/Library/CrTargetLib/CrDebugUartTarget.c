@@ -10,7 +10,6 @@ STATIC CrDebugUartContext mCrDebugUartContext = {
     .DataBits    = 0,
     .Parity      = 0,
     .StopBits    = 0,
-
 };
 
 CrDebugUartContext *CrTargetGetDebugUartContext(VOID)
