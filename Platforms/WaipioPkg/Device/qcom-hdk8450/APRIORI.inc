@@ -78,8 +78,11 @@ APRIORI DXE {
     INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/DDRInfoDxe/DDRInfoDxe.inf
 #    INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/FeatureEnablerDxe/FeatureEnablerDxe.inf
-    INF AndromedaPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf
-#    INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/DisplayDxe.inf
+#    INF AndromedaPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf
+
+    INF CranePkg/Driver/Lt9611uxcCrDxe/lt9611.inf
+    INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/DisplayDxe.inf
+    INF AndromedaPkg/Driver/DisplayCallerDxe/DisplayCallerDxe.inf
 
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/FvUtilsDxe/FvUtilsDxe.inf
     INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PILProxyDxe/PILProxyDxe.inf
@@ -149,5 +152,4 @@ APRIORI DXE {
     INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
     INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
     INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
-#    INF AndromedaPkg/Driver/DisplayCallerDxe/DisplayCallerDxe.inf
 }

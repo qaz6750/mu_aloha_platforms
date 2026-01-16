@@ -4,7 +4,7 @@ gAndromedaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight|1080
 
 # Display Caller
 gAndromedaPkgTokenSpaceGuid.PcdDisplayCallerExitDisableDisplay|FALSE
-gAndromedaPkgTokenSpaceGuid.PcdDisplayCallerStallBeforeEnable|1000
+gAndromedaPkgTokenSpaceGuid.PcdDisplayCallerStallBeforeEnable|800
 
 # Smbios Info
 gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemBrand|"Qualcomm"
@@ -14,6 +14,13 @@ gAndromedaPkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Snapdragon (TM) 8 Gen 1 @ 2
 gAndromedaPkgTokenSpaceGuid.PcdSmbiosProcessorRetailModel|"SM8450"
 
 gAndromedaPkgTokenSpaceGuid.PcdABLProduct|"waipio"
+
+# Lt9611 Config
+gCranePkgTokenSpaceGuid.PcdLt9611GpioInt|44
+# Vdd 1p2: Gpio109
+# Vdd 3v3: Gpio9
+# Reset:   Gpio107
+gCranePkgTokenSpaceGuid.PcdLt9611GpioHigh|{0x6d, 0x00, 0x09, 0x00, 0x6b, 0x00}
 
 [PcdsDynamicDefault.common]
 gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1920

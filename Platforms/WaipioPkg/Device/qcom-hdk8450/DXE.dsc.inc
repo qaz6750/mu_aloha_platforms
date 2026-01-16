@@ -1,7 +1,8 @@
 [Components.common]
 # QcomPkg/XBLCore/XBLCore.inf
-#AndromedaPkg/Driver/DisplayCallerDxe/DisplayCallerDxe.inf
+AndromedaPkg/Driver/DisplayCallerDxe/DisplayCallerDxe.inf
 AndromedaPkg/Driver/RamPartitionDxe/RamPartitionDxe.inf
+CranePkg/Driver/Lt9611uxcCrDxe/lt9611.inf
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/EnvDxe/EnvDxe.inf
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PwrUtilsDxe/PwrUtilsDxe.inf
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/VcsDxe/VcsDxe.inf
@@ -60,7 +61,7 @@ $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Application/QcomCharger
 
 # Device Specific Patched DXE
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/ClockDxe.inf
-#$(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/DisplayDxe.inf
+$(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/DisplayDxe.inf
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/UFSDxe.inf
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/SdccDxe.inf
 $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PatchedBinaries/ButtonsDxe.inf
