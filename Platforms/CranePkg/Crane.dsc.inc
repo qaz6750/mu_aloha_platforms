@@ -8,16 +8,15 @@
 
   # Generic libraries that interact with oskal
   CmdDBLib|CranePkg/Library/CmdDBLib/cmddb.inf
-  RpmhLib|CranePkg/Library/RpmhLib/rpmh.inf
   ClockLib|CranePkg/Library/ClockLib/clock.inf
   DebugUartLib|CranePkg/Library/DebugUartLib/debug_uart.inf
+  GpioLib|CranePkg/Library/GpioLib/gpio.inf
+  RpmhLib|CranePkg/Library/RpmhLib/rpmh.inf
+  PdcLib|CranePkg/Library/PdcLib/pdc.inf
 
 [Components.common]
   CranePkg/Driver/CmdDBCrDxe/CmdDBCrDxe.inf
   CranePkg/Driver/RpmhCrDxe/RpmhCrDxe.inf
   CranePkg/Driver/ClockCrDxe/ClockCrDxe.inf
-
-# This Driver is conflict with uart debuglib
-!if $(USE_UART_GENI_FOR_SERIAL_OUTPUT) == 0
+  CranePkg/Driver/GpioCrDxe/GpioCrDxe.inf
   CranePkg/Driver/DebugUartSerialCrDxe/DebugUartSerialCrDxe.inf
-!endif
