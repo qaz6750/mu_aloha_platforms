@@ -11,6 +11,8 @@
 #include <Library/TimerLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 
+#include <Protocol/HardwareInterrupt2.h>
+
 #include <oskal/cr_assert.h>
 #include <oskal/cr_debug.h>
 #include <oskal/cr_interrupt.h>
@@ -51,12 +53,33 @@ CrInterruptInit(VOID)
   return CR_SUCCESS;
 }
 
+STATIC inline EFI_HARDWARE_INTERRUPT2_TRIGGER_TYPE
+CrInterruptTypeTanslate(IN CR_INTERRUPT_TRIGGER_TYPE Type)
+{
+  switch (Type) {
+  case CR_INTERRUPT_TRIGGER_LEVEL_LOW:
+    return EFI_HARDWARE_INTERRUPT2_TRIGGER_LEVEL_LOW;
+  case CR_INTERRUPT_TRIGGER_LEVEL_HIGH:
+    return EFI_HARDWARE_INTERRUPT2_TRIGGER_LEVEL_HIGH;
+  case CR_INTERRUPT_TRIGGER_EDGE_FALLING:
+    return EFI_HARDWARE_INTERRUPT2_TRIGGER_EDGE_FALLING;
+  case CR_INTERRUPT_TRIGGER_EDGE_RISING:
+    return EFI_HARDWARE_INTERRUPT2_TRIGGER_EDGE_RISING;
+  case CR_INTERRUPT_TRIGGER_EDGE_BOTH:
+    // Not supported directly
+    return EFI_HARDWARE_INTERRUPT2_TRIGGER_EDGE_RISING;
+  default:
+    return 0xFF;
+  }
+}
+
 CR_STATUS
 CrRegisterInterrupt(
     IN UINT32 InterruptNumber, IN CR_INTERRUPT_HANDLER InterruptHandler,
-    IN VOID *Param, IN CR_INTERRUPT_TRIGGER_TYPE TriggerType)
+    IN VOID *Param, IN CR_INTERRUPT_TRIGGER_TYPE CrTriggerType)
 {
   EFI_STATUS Status;
+
 
   // Assuming disabling interrupt
   if (InterruptHandler == NULL) {
@@ -67,6 +90,14 @@ CrRegisterInterrupt(
   if (mHwInterrupt2 == NULL)
     if (CrInterruptInit() != CR_SUCCESS)
       return CR_NOT_FOUND;
+
+  // Translate trigger type
+  EFI_HARDWARE_INTERRUPT2_TRIGGER_TYPE TriggerType =
+      CrInterruptTypeTanslate(CrTriggerType);
+  if (TriggerType == 0xFF) {
+    log_err("%a: Invalid trigger type %d", __FUNCTION__, CrTriggerType);
+    return CR_INVALID_PARAMETER;
+  }
 
   // Find a free entry
   {
@@ -126,6 +157,41 @@ CrUnregisterInterrupt(IN UINT32 InterruptNumber)
   if (mHwInterrupt2 == NULL)
     if (CrInterruptInit() != CR_SUCCESS)
       return CR_NOT_FOUND;
+
+  // Find the entry
+  {
+    UINTN i;
+    for (i = 0; i < MAX_INTERRUPT_ENTRIES; i++) {
+      if ((mCrIntTable[i].Source == InterruptNumber) && InterruptNumber &&
+          (mCrIntTable[i].Handler != NULL)) {
+        // Clear the entry
+        mCrIntTable[i].Handler = NULL;
+        mCrIntTable[i].Param   = NULL;
+        mCrIntTable[i].Source  = 0;
+        break;
+      }
+    }
+    if (i == MAX_INTERRUPT_ENTRIES) {
+      log_err(
+          "%a: Interrupt entry for interrupt %u not found", __FUNCTION__,
+          InterruptNumber);
+      return CR_NOT_FOUND;
+    }
+    // Move other entries forward to fill the gap
+    // TODO: Interrupt should be disabled when operation here.
+    for (; i < MAX_INTERRUPT_ENTRIES - 1; i++) {
+      if (mCrIntTable[i + 1].Handler != NULL) {
+        mCrIntTable[i] = mCrIntTable[i + 1];
+        // Clear the moved entry
+        mCrIntTable[i + 1].Handler = NULL;
+        mCrIntTable[i + 1].Param   = NULL;
+        mCrIntTable[i + 1].Source  = 0;
+      }
+      else {
+        break;
+      }
+    }
+  }
 
   // Disable the interrupt source
   Status =

@@ -7,16 +7,15 @@
 #pragma once
 #include <oskal/cr_status.h>
 #include <oskal/cr_types.h>
-#include <Protocol/HardwareInterrupt2.h>
 
-#define CR_INTERRUPT_TRIGGER_LEVEL_LOW EFI_HARDWARE_INTERRUPT2_TRIGGER_LEVEL_LOW
-#define CR_INTERRUPT_TRIGGER_LEVEL_HIGH                                        \
-  EFI_HARDWARE_INTERRUPT2_TRIGGER_LEVEL_HIGH
-#define CR_INTERRUPT_TRIGGER_EDGE_FALLING                                      \
-  EFI_HARDWARE_INTERRUPT2_TRIGGER_EDGE_FALLING
-#define CR_INTERRUPT_TRIGGER_EDGE_RISING                                       \
-  EFI_HARDWARE_INTERRUPT2_TRIGGER_EDGE_RISING
-#define CR_INTERRUPT_TRIGGER_TYPE EFI_HARDWARE_INTERRUPT2_TRIGGER_TYPE
+typedef enum {
+  CR_INTERRUPT_TRIGGER_LEVEL_LOW,
+  CR_INTERRUPT_TRIGGER_LEVEL_HIGH,
+  CR_INTERRUPT_TRIGGER_EDGE_FALLING,
+  CR_INTERRUPT_TRIGGER_EDGE_RISING,
+  CR_INTERRUPT_TRIGGER_EDGE_BOTH,
+  CR_INTERRUPT_TRIGGER_TYPE_INVALID = 0xFF
+} CR_INTERRUPT_TRIGGER_TYPE;
 
 typedef VOID (*CR_INTERRUPT_HANDLER)(VOID *Parameters);
 
@@ -32,7 +31,8 @@ typedef struct {
  * Register an interrupt handler for a specific interrupt vector
  *
  * @param InterruptNumber  The interrupt vector number to register
- * @param InterruptHandler The handler function to call when interrupt fires, disable irq if null.
+ * @param InterruptHandler The handler function to call when interrupt fires,
+ * disable irq if null.
  * @param Param            Parameter to pass to the interrupt handler
  * @param TriggerType      Interrupt trigger type (edge or level)
  *
