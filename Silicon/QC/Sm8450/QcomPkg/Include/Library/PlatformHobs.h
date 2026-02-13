@@ -16,11 +16,11 @@ typedef EFI_STATUS (*GET_MEM_INFO_BY_ADDRESS)(
     UINT64 RegionBaseAddress, ARM_MEMORY_REGION_DESCRIPTOR_EX *MemRegions);
 
 typedef struct {
-  UINT32 LibVersion;
-  GET_MEM_INFO_BY_NAME GetMemInfoByName;
-  GET_CONFIG_STRING GetCfgInfoString;
-  GET_CONFIG_VAL GetCfgInfoVal;
-  GET_CONFIG_VAL64 GetCfgInfoVal64;
+  UINT32                  LibVersion;
+  GET_MEM_INFO_BY_NAME    GetMemInfoByName;
+  GET_CONFIG_STRING       GetCfgInfoString;
+  GET_CONFIG_VAL          GetCfgInfoVal;
+  GET_CONFIG_VAL64        GetCfgInfoVal64;
   GET_MEM_INFO_BY_ADDRESS GetMemInfoByAddress;
 } UefiCfgLibType;
 
@@ -59,27 +59,12 @@ typedef struct {
 } ShLibLoaderType;
 
 #define EFI_INFORMATION_BLOCK_GUID                                             \
-  {                                                                            \
-    0x90a49afd, 0x422f, 0x08ae,                                                \
-    {                                                                          \
-      0x96, 0x11, 0xe7, 0x88, 0xd3, 0x80, 0x48, 0x45                           \
-    }                                                                          \
-  }
+  {0x90a49afd, 0x422f, 0x08ae, {0x96, 0x11, 0xe7, 0x88, 0xd3, 0x80, 0x48, 0x45}}
 
 #define EFI_SHIM_LIBRARY_GUID                                                  \
-  {                                                                            \
-    0xbedaeabc, 0x5e70, 0x4d66,                                                \
-    {                                                                          \
-      0x97, 0x33, 0x21, 0x3d, 0x07, 0x2b, 0x9d, 0x04                           \
-    }                                                                          \
-  }
+  {0xbedaeabc, 0x5e70, 0x4d66, {0x97, 0x33, 0x21, 0x3d, 0x07, 0x2b, 0x9d, 0x04}}
 
 #define EFI_FV_DECOMPRESS_GUID                                                 \
-  {                                                                            \
-    0x12dbd93d, 0x402a, 0x416e,                                                \
-    {                                                                          \
-      0xec, 0x20, 0x5f, 0x80, 0xcf, 0x5f, 0x7f, 0xe7                           \
-    }                                                                          \
-  }
+  {0x12dbd93d, 0x402a, 0x416e, {0xec, 0x20, 0x5f, 0x80, 0xcf, 0x5f, 0x7f, 0xe7}}
 
 #endif /* _PLATFORM_HOBS_H_ */

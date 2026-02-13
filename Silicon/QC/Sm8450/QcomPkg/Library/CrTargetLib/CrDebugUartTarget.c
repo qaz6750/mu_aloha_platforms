@@ -3,7 +3,11 @@
 
 STATIC CrDebugUartContext mCrDebugUartContext = {
     .BaseAddress = 0x99c000,
-    .InterruptNo = GIC_SPI(608),
+    .InterruptConfig =
+        {
+            .InterruptNumber = GIC_SPI(608),
+            .TriggerType     = CR_INTERRUPT_TRIGGER_LEVEL_HIGH,
+        },
     .IsDebugUart = TRUE,
     .Type        = DEBUG_UART_TYPE_GENI,
     .BaudRate    = 115200,

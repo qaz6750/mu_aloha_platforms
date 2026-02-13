@@ -8,8 +8,12 @@ STATIC RpmhDeviceContext RpmhContext = {
     .drv_base_address = 0x17a20000,
     .drv_id           = 2,
     .tcs_offset       = 0xd00,
-    .interrupt_no     = GIC_SPI(5),
-    .drv_registers    = NULL,
+    .InterruptConfig =
+        {
+            .InterruptNumber = GIC_SPI(5),
+            .TriggerType     = CR_INTERRUPT_TRIGGER_LEVEL_HIGH,
+        },
+    .drv_registers = NULL,
     .tcs_config =
         {.active_tcs  = {.tcs_count = 3},
          .sleep_tcs   = {.tcs_count = 2},
@@ -17,7 +21,4 @@ STATIC RpmhDeviceContext RpmhContext = {
          .control_tcs = {.tcs_count = 0}},
 };
 
-RpmhDeviceContext *CrTargetGetRpmhContext(VOID)
-{
-    return &RpmhContext;
-}
+RpmhDeviceContext *CrTargetGetRpmhContext(VOID) { return &RpmhContext; }
