@@ -2,5 +2,8 @@
 
 #include <Library/IoLib.h>
 #include <Library/PlatformPrePiLib.h>
+#include <Library/QcomMmuDetachHelperLib.h>
 
-VOID PlatformInitialize(VOID) {}
+VOID PlatformInitialize(VOID) {
+  MmuDetach();
+}
