@@ -95,6 +95,9 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager, PrEvalSetting
             RequiredSubmodule("Platforms/OpensslPkg/Library/OpensslLib/openssl", True),
             RequiredSubmodule("Platforms/SurfaceDuoACPI", True),
             RequiredSubmodule("Silicon/Arm/MU_TIANO", True),
+## aloha patch start
+            RequiredSubmodule("Platforms/CranePkg", True),
+## aloha patch end
         ]
 
     def SetArchitectures(self, list_of_requested_architectures):
