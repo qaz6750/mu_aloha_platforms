@@ -2,7 +2,7 @@
 #include <oskal/common.h>
 
 STATIC CrDebugUartContext mCrDebugUartContext = {
-    .BaseAddress = 0x99c000,
+    .BaseAddress = FixedPcdGet32(PcdUartSerialBase),
     .InterruptConfig =
         {
             .InterruptNumber = GIC_SPI(608),

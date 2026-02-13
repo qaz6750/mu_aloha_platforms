@@ -19,6 +19,10 @@
   MdePkg/MdePkg.dec
   QcomPkg/QcomPkg.dec
   CranePkg/CranePkg.dec
+  AndromedaPkg/AndromedaPkg.dec
 
 [LibraryClasses]
   BaseLib
+
+[Pcd]
+  gAndromedaPkgTokenSpaceGuid.PcdUartSerialBase
