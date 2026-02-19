@@ -179,9 +179,7 @@ PlatformUpdateAcpiTables(VOID)
   UpdateNameAslCode(SIGNATURE_32('P', 'R', 'P', '1'), &PRP1, 4);
   UpdateNameAslCode(SIGNATURE_32('S', 'I', 'D', 'S'), &SIDS, EFICHIPINFO_MAX_ID_LENGTH);
 
-
-
   DEBUG((EFI_D_ERROR, "PMIC ARB Ver: 0x%X\n", Version));
 
-  gBs->Stall(10000000000);
+  gBS->Stall(10000000000);
 }
