@@ -24,6 +24,8 @@
 #include <Protocol/EFIPlatformInfo.h>
 #include <Protocol/EFISmem.h>
 
+#define CORE 0x0c440000
+
 VOID
 PlatformUpdateAcpiTables(VOID)
 {
@@ -60,6 +62,7 @@ PlatformUpdateAcpiTables(VOID)
   UINT32                              RFAS = 0;
   UINT32                              TCMA = 0;
   UINT32                              TCML = 0;
+  UINT32                              Version = MmioRead32(CORE);
 
   EFI_CHIPINFO_PROTOCOL     *mBoardProtocol           = NULL;
   EFI_SMEM_PROTOCOL         *pEfiSmemProtocol         = NULL;
@@ -175,4 +178,10 @@ PlatformUpdateAcpiTables(VOID)
   UpdateNameAslCode(SIGNATURE_32('P', 'R', 'P', '0'), &PRP0, 4);
   UpdateNameAslCode(SIGNATURE_32('P', 'R', 'P', '1'), &PRP1, 4);
   UpdateNameAslCode(SIGNATURE_32('S', 'I', 'D', 'S'), &SIDS, EFICHIPINFO_MAX_ID_LENGTH);
+
+
+
+  DEBUG((EFI_D_ERROR, "PMIC ARB Ver: 0x%X\n", Version));
+
+  gBs->Stall(10000000000);
 }
