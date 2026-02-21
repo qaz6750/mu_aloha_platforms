@@ -71,7 +71,7 @@
 
 [BuildOptions.common]
 
-GCC:*_*_AARCH64_CC_FLAGS = -DSILICON_PLATFORM=845
+GCC:*_*_AARCH64_CC_FLAGS = -DSILICON_PLATFORM=670
 
 [PcdsFixedAtBuild.common]
   # Platform-specific
