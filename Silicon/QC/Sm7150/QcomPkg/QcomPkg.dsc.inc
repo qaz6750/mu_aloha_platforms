@@ -35,6 +35,10 @@
   # UART
   gAndromedaPkgTokenSpaceGuid.PcdUartSerialBase|0x00A90000
 
+  
+  # Keep MDP Stream IDs attached by default
+  gAndromedaPkgTokenSpaceGuid.PcdSMMUSIDsToKeep|{0x00, 0x08,    0x01, 0x08,    0x40, 0x08,    0x41, 0x08,    0x00, 0x0C,    0x01, 0x0C,    0x40, 0x0C,    0x41, 0x0C}
+
 [LibraryClasses.common]
   # PlatformMemoryMapLib|QcomPkg/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
   # PlatformConfigurationMapLib|QcomPkg/Library/PlatformConfigurationMapLib/PlatformConfigurationMapLib.inf
@@ -46,6 +50,8 @@
 
   AcpiPlatformUpdateLib|QcomPkg/Library/AcpiPlatformUpdateLib/AcpiPlatformUpdateLib.inf
   PlatformThemeLib|QcomPkg/Library/PlatformThemeLib/PlatformThemeLib.inf
+
+  QcomMmuDetachHelperLib|AndromedaPkg/Library/QcomMmuDetachHelperLib/QcomMmuDetachHelperLib.inf
 
 [Components.common]
  AndromedaPkg/Driver/RamPartitionDxe/RamPartitionDxe.inf

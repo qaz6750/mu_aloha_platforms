@@ -1,8 +1,9 @@
 #
-#  Copyright (c) 2011-2015, ARM Limited. All rights reserved.
+#  Copyright (c) 2011 - 2022, ARM Limited. All rights reserved.
 #  Copyright (c) 2014, Linaro Limited. All rights reserved.
-#  Copyright (c) 2015 - 2016, Intel Corporation. All rights reserved.
+#  Copyright (c) 2015 - 2020, Intel Corporation. All rights reserved.
 #  Copyright (c) 2018, Bingxing Wang. All rights reserved.
+#  Copyright (c) Microsoft Corporation.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -52,7 +53,7 @@
 
   PEI_CRYPTO_SERVICES            = NONE
   DXE_CRYPTO_SERVICES            = STANDARD
-  RUNTIMEDXE_CRYPTO_SERVICES     = NONE
+  RUNTIMEDXE_CRYPTO_SERVICES     = STANDARD
   SMM_CRYPTO_SERVICES            = NONE
   STANDALONEMM_CRYPTO_SERVICES   = NONE
   PEI_CRYPTO_ARCH                = NONE

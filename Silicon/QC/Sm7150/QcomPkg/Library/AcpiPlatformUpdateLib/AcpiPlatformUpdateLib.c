@@ -1,3 +1,10 @@
+/** @file
+
+  Copyright (c) 2022-2024 DuoWoA authors
+
+  SPDX-License-Identifier: MIT
+
+**/
 #include <Uefi.h>
 
 #include <Library/AcpiPlatformUpdateLib.h>
@@ -42,8 +49,6 @@ PlatformUpdateAcpiTables(VOID)
   UINT32                              TPMA  = 0x1;
   UINT32                              TDTV  = 0x6654504D;
   UINT64                              SOSI  = 0;
-//  UINT32                              PRP0  = 0;
-//  UINT32                              PRP1  = 0;
   CHAR8                               SIDS[EFICHIPINFO_MAX_ID_LENGTH] = {0};
   EFI_PLATFORMINFO_PLATFORM_INFO_TYPE PlatformInfo;
   UINT32                              RMTB = 0;
@@ -166,7 +171,5 @@ PlatformUpdateAcpiTables(VOID)
   UpdateNameAslCode(SIGNATURE_32('T', 'C', 'M', 'A'), &TCMA, 4);
   UpdateNameAslCode(SIGNATURE_32('T', 'C', 'M', 'L'), &TCML, 4);
   UpdateNameAslCode(SIGNATURE_32('S', 'O', 'S', 'I'), &SOSI, 8);
-//  UpdateNameAslCode(SIGNATURE_32('P', 'R', 'P', '0'), &PRP0, 4);
-//  UpdateNameAslCode(SIGNATURE_32('P', 'R', 'P', '1'), &PRP1, 4);
   UpdateNameAslCode(SIGNATURE_32('S', 'I', 'D', 'S'), &SIDS, EFICHIPINFO_MAX_ID_LENGTH);
 }

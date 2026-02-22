@@ -1,8 +1,9 @@
 #
-#  Copyright (c) 2011-2015, ARM Limited. All rights reserved.
+#  Copyright (c) 2011 - 2022, ARM Limited. All rights reserved.
 #  Copyright (c) 2014, Linaro Limited. All rights reserved.
-#  Copyright (c) 2015 - 2016, Intel Corporation. All rights reserved.
+#  Copyright (c) 2015 - 2020, Intel Corporation. All rights reserved.
 #  Copyright (c) 2018, Bingxing Wang. All rights reserved.
+#  Copyright (c) Microsoft Corporation.
 #
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 #
@@ -50,12 +51,12 @@
   DB_DEFAULT_FILE5               = AndromedaPkg/Include/Resources/SecureBoot/keystore/DB/Certificates/microsoft_option_rom_uefi_ca_2023.der
   DBX_DEFAULT_FILE1              = AndromedaPkg/Include/Resources/SecureBoot/Artifacts/Aarch64/DefaultDbx.bin
 
-    PEI_CRYPTO_SERVICES            = NONE
+  PEI_CRYPTO_SERVICES            = NONE
   DXE_CRYPTO_SERVICES            = STANDARD
-  RUNTIMEDXE_CRYPTO_SERVICES     = NONE
+  RUNTIMEDXE_CRYPTO_SERVICES     = STANDARD
   SMM_CRYPTO_SERVICES            = NONE
   STANDALONEMM_CRYPTO_SERVICES   = NONE
-    PEI_CRYPTO_ARCH                = NONE
+  PEI_CRYPTO_ARCH                = NONE
   DXE_CRYPTO_ARCH                = AARCH64
   RUNTIMEDXE_CRYPTO_ARCH         = AARCH64
   SMM_CRYPTO_ARCH                = NONE
