@@ -26,6 +26,7 @@
 #define GENI_M_CMD0_ADDR                                 0x00000000
 #define GENI_M_IRQ_EN_SET_ADDR                           0x0000001c
 #define GENI_M_IRQ_EN_CLEAR_ADDR                         0x00000020
+#define GENI_S_CMD0_ADDR                                 0x00000030
 #define GENI_S_IRQ_CLEAR_ADDR                            0x00000048
 #define GENI_S_IRQ_EN_SET_ADDR                           0x0000004c
 #define GENI_S_IRQ_EN_CLEAR_ADDR                         0x00000050
