@@ -16,7 +16,7 @@ static ARM_MEMORY_REGION_DESCRIPTOR_EX gDeviceMemoryDescriptorEx[] = {
     {"QTEE",               0x86200000, 0x03900000, NoHob,  SYS_MEM, SYS_MEM_CAP, Reserv, NS_DEVICE}, /* Added */
     {"TZApps",             0x86d00000, 0x00B00000, NoHob,  SYS_MEM, SYS_MEM_CAP, Reserv, NS_DEVICE}, /* Added */
     {"PIL_REGION",         0x8AB00000, 0x0DA00000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, UNCACHED_UNBUFFERED_XN},
-    {"DXE Heap",	         0x98500000, 0x03B00000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
+    {"DXE Heap",           0x98500000, 0x03B00000, AddMem, SYS_MEM, SYS_MEM_CAP, Reserv, WRITE_BACK_XN},
     {"Sched Heap",         0x9BC00000, 0x00400000, AddMem, SYS_MEM, SYS_MEM_CAP, BsData, WRITE_BACK_XN},
     {"Display Reserved",   0x9C000000, 0x01800000, AddMem, MEM_RES, SYS_MEM_CAP, Reserv, WRITE_THROUGH_XN},
     {"ADSP RPC",           0x9D800000, 0x00C00000, AddMem, MEM_RES, UNCACHEABLE, Reserv, UNCACHED_UNBUFFERED_XN},
