@@ -121,8 +121,8 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Qualcomm Technologies, Inc. MTP 8150 | qcom-mtp8150           | ✅              | NONE                                               |
-| Qualcomm Technologies, Inc. QRD 8150 | qcom-qrd8150           | ✅              | sunflower2333                                      |
+| Qualcomm Technologies, Inc. MTP 8150 | qcom-mtp8150           | ✅              | None                                               |
+| Qualcomm Technologies, Inc. QRD 8150 | qcom-qrd8150           | ✅              | [sunflower2333](https://github.com/sunflower2333)  |
 
 #### ASUS Devices
 
@@ -140,20 +140,20 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| BlackShark 2                         | blackshark-skywalker   | ❌              | NONE                                               |
-| BlackShark 2 Pro                     | blackshark-darklighter | ❌              | NONE                                               |
+| BlackShark 2                         | blackshark-skywalker   | ❌              | None                                               |
+| BlackShark 2 Pro                     | blackshark-darklighter | ❌              | None                                               |
 
 #### HTC Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| HTC 5G Hub                           | htc-rtx                | ❌              | NONE                                               |
+| HTC 5G Hub                           | htc-rtx                | ❌              | None                                               |
 
 #### LG Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| LG G8                                | lg-alphaplus           | ✅              | sunflower2333                                      |
+| LG G8                                | lg-alphaplus           | ✅              | [sunflower2333](https://github.com/sunflower2333)  |
 | LG G8S                               | lg-betalm              | ✅              | [J0SH1X](https://github.com/J0SH1X)                |
 | LG G8X                               | lg-mh2lm               | ✅              | [Molly Sophia](https://github.com/MollySophia)     |
 | LG V50                               | lg-flashlmdd           | ✅              | [AKA](https://github.com/AKAsaliza)                |
@@ -163,40 +163,40 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Meizu 16s                            | meizu-m971q            | ❌              | NONE                                               |
-| Meizu 16T                            | meizu-m928q            | ❌              | NONE                                               |
+| Meizu 16s                            | meizu-m971q            | ❌              | None                                               |
+| Meizu 16T                            | meizu-m928q            | ❌              | None                                               |
 
 #### Nubia Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
 | Nubia Mini 5G                        | nubia-tp1803           | ✅              | [Alula](https://github.com/alula)                  |
-| Nubia RedMagic 3                     | nubia-nx629j           | ❌              | NONE                                               |
-| Nubia RedMagic 3S                    | nubia-nx629jv1s        | ❌              | NONE                                               |
+| Nubia RedMagic 3                     | nubia-nx629j           | ❌              | None                                               |
+| Nubia RedMagic 3S                    | nubia-nx629jv1s        | ❌              | None                                               |
 
 #### OnePlus Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| OnePlus 7                            | oneplus-guacamoleb     | ✅              | NONE                                               |
+| OnePlus 7                            | oneplus-guacamoleb     | ✅              | None                                               |
 | OnePlus 7 Pro                        | oneplus-guacamole      | ✅              | [Waseem Alkurdi](https://github.com/WaseemAlkurdi) |
-| OnePlus 7T                           | oneplus-hotdogb        | ✅              | UNKNOWN                                            |
+| OnePlus 7T                           | oneplus-hotdogb        | ✅              | None                                               |
 | OnePlus 7T Pro                       | oneplus-hotdog         | ✅              | [Morc](https://github.com/TheMorc)                 |
-| OnePlus 7T Pro 5G                    | oneplus-hotdogg        | ✅              | NONE                                               |
+| OnePlus 7T Pro 5G                    | oneplus-hotdogg        | ✅              | None                                               |
 
 #### OPPO Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| OPPO Reno 10X                        | oppo-op46c3            | ❌              | NONE                                               |
-| OPPO Reno ACE                        | oppo-pclm10            | ✅              | NONE                                               |
+| OPPO Reno 10X                        | oppo-op46c3            | ❌              | None                                               |
+| OPPO Reno ACE                        | oppo-pclm10            | ✅              | None                                               |
 
 #### Realme Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Realme X2 Pro                        | realme-rmx1931         | ❌              | NONE                                               |
-| Realme X3 SuperZoom                  | realme-rmx2086         | ✅              | NONE                                               |
+| Realme X2 Pro                        | realme-rmx1931         | ❌              | None                                               |
+| Realme X3 SuperZoom                  | realme-rmx2086         | ✅              | None                                               |
 
 #### Samsung Devices
 
@@ -204,24 +204,24 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
 | Samsung Galaxy Fold                  | samsung-winner         | ✅              | [Ost268](https://github.com/Ost268)                |
 | Samsung Galaxy S10                   | samsung-beyond1qlte    | ✅              | [Ww](https://github.com/Idonotkno)                 |
-| Samsung Galaxy Tab S6                | samsung-gts6l          | ✅              | NONE                                               |
+| Samsung Galaxy Tab S6                | samsung-gts6l          | ✅              | None                                               |
 | Samsung Galaxy Tab S6 WIFI           | samsung-gts6lwifi      | ✅              | [qaz6750](https://github.com/qaz6750)              |
 
 #### Smartisan Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Smartisan Pro 3                      | smartisan-aries        | ❌              | NONE                                               |
+| Smartisan Pro 3                      | smartisan-aries        | ❌              | None                                               |
 
 #### Xiaomi Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
 | Xiaomi 9                             | xiaomi-cepheus         | ✅              | [qaz6750](https://github.com/qaz6750)              |
-| Xiaomi K20 Pro                       | xiaomi-raphael         | ✅              | [Degdag](https://github.com/degdag)&sunflower2333  |
-| Xiaomi Mix Alpha u2                  | xiaomi-avenger         | ❌              | NONE                                               |
-| Xiaomi Mix3 5G                       | xiaomi-andromeda       | ✅              | NONE                                               |
-| Xiaomi Mix3.5                        | xiaomi-hercules        | ✅              | NONE                                               |
+| Xiaomi K20 Pro                       | xiaomi-raphael         | ✅              | [Degdag](https://github.com/degdag) & [sunflower2333](https://github.com/sunflower2333) |
+| Xiaomi Mix Alpha u2                  | xiaomi-avenger         | ❌              | None                                               |
+| Xiaomi Mix3 5G                       | xiaomi-andromeda       | ✅              | None                                               |
+| Xiaomi Mix3.5                        | xiaomi-hercules        | ✅              | None                                               |
 | Xiaomi Pad 5                         | xiaomi-nabu            | ✅              | [Map220v](https://github.com/map220v)              |
 | Xiaomi Poco X3 Pro                   | xiaomi-vayu            | ✅              | [Degdag](https://github.com/degdag)                |
 
@@ -232,13 +232,13 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Maintainers                                        |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Qualcomm Technologies, Inc. QRD 7125 | qcom-qrd7125           | ✅              | sunflower2333                                      |
+| Qualcomm Technologies, Inc. QRD 7125 | qcom-qrd7125           | ✅              | [sunflower2333](https://github.com/sunflower2333)  |
 
 #### Xiaomi Devices
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Xiaomi Note 9S                       | xiaomi-miatoll         | ✅              | Icesito                                            |
+| Xiaomi Note 9S                       | xiaomi-miatoll         | ✅              | [Icesito](https://github.com/Icesito68)            |
 
 ### Snapdragon 730/730G/732G (*SM7150*)
 
@@ -250,7 +250,7 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 #### Xiaomi Devices
 
-| Device                               | Target name            | DSDT Support    | Contributors                                       |
+| Device                               | Target name            | DSDT Support    | Maintainers                                        |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
 | Xiaomi POCO X3                       | xiaomi-surya           | ✅              | [remtrik](https://github.com/remtrik)              |
 
@@ -258,7 +258,7 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| EEBBK S6                       | eebbk-h130           | ❌              | [XiKoTaSu](https://github.com/XiKoTaSu)&[snapdragon730](https://github.com/snapdragon730)|
+| EEBBK S6                             | eebbk-h130             | ❌              | [XiKoTaSu](https://github.com/XiKoTaSu) & [snapdragon730](https://github.com/snapdragon730) |
 
 ### Snapdragon 778G/7c+ Gen 3 (*SM7325*/*SC7280*)
 
@@ -266,7 +266,7 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Maintainers                                        |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Qualcomm Technologies, Inc. QRD 7325 | qcom-qrd7325           | ✅              | [Ayu](https://github.com/chenyu0329)&sunflower2333 |
+| Qualcomm Technologies, Inc. QRD 7325 | qcom-qrd7325           | ✅              | [Ayu](https://github.com/chenyu0329) & [sunflower2333](https://github.com/sunflower2333) |
 
 
 ### Snapdragon 888/888+/888 4G/G3x Gen 1 (*SM8350*/*SM8350P*/*SG8175P*)
