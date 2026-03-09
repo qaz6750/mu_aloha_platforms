@@ -30,10 +30,6 @@
 [submodule "Features/CONFIG"]
 	path = Features/CONFIG
 	url = https://github.com/microsoft/mu_feature_config.git
-[submodule "Platforms/OpensslPkg/Library/OpensslLib/openssl"]
-	path = Platforms/OpensslPkg/Library/OpensslLib/openssl
-	url = https://github.com/openssl/openssl.git
-	branch = 830bf8e1e4749ad65c51b6a1d0d769ae689404ba
 [submodule "Platforms/CranePkg"]
 	path = Platforms/CranePkg
 	url = https://github.com/Project-Aloha/CrDK
