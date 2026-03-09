@@ -563,10 +563,10 @@
     <LibraryClasses>
       BaseCryptLib|OpensslPkg/Library/BaseCryptLib/RuntimeCryptLib.inf
       TlsLib|OpensslPkg/Library/TlsLib/TlsLib.inf
-      IntrinsicLib|OpensslPkg/Library/IntrinsicLib/IntrinsicLib.inf
+      IntrinsicLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
 ## Patch: Fix memset redefine issue while linking, only implement while screen serial is enabled.
 !if $(USE_SCREEN_FOR_SERIAL_OUTPUT) == 1
-      CompilerIntrinsicsLib|OpensslPkg/Library/IntrinsicLib/IntrinsicLib.inf
+      CompilerIntrinsicsLib|CryptoPkg/Library/IntrinsicLib/IntrinsicLib.inf
 !endif
 ## End patch
       OpensslLib|OpensslPkg/Library/OpensslLib/OpensslLib.inf # Contains openSSL library used by BaseCryptoLib
@@ -665,7 +665,7 @@
 #
 ###################################################################################################
 [BuildOptions]
-  *_CLANGPDB_AARCH64_CC_FLAGS = -Wno-unused-const-variable -Wno-sometimes-uninitialized -Wno-unaligned-access -D CLANG
+  *_CLANGPDB_AARCH64_CC_FLAGS = -Wno-unused-const-variable -Wno-sometimes-uninitialized -Wno-unaligned-access -D CLANG -Wno-ignored-pragma-optimize
   *_*_*_CC_FLAGS = -DSECURE_BOOT=$(SECURE_BOOT) -DUSE_MEMORY_FOR_SERIAL_OUTPUT=$(USE_MEMORY_FOR_SERIAL_OUTPUT) -DUSE_SCREEN_FOR_SERIAL_OUTPUT=$(USE_SCREEN_FOR_SERIAL_OUTPUT) -DPLATFORM_HAS_ACTLR_EL1_UNIMPLEMENTED_ERRATA=$(PLATFORM_HAS_ACTLR_EL1_UNIMPLEMENTED_ERRATA) -DPLATFORM_HAS_AMCNTENSET0_EL0_UNIMPLEMENTED_ERRATA=$(PLATFORM_HAS_AMCNTENSET0_EL0_UNIMPLEMENTED_ERRATA) -DPLATFORM_HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA=$(PLATFORM_HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA) -DPLATFORM_HAS_PSCI_MEMPROTECT_FAILING_ERRATA=$(PLATFORM_HAS_PSCI_MEMPROTECT_FAILING_ERRATA) -D __DEPRECATED_AARCH64_4K_RUNTIME_GRANULARITY
   *_*_*_CC_FLAGS = -DZ_SOLO -DPRODUCT_NAME=\"Andromeda\" -DINIT_BIN=\"/init\" -DENABLE_UPDATE_PARTITIONS_CMDS -DENABLE_BOOT_CMD -DENABLE_DEVICE_CRITICAL_LOCK_UNLOCK_CMDS -DUSERDATA_FS_TYPE=\"ext4\"
 
