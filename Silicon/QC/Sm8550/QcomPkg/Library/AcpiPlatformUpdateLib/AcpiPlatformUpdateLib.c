@@ -92,7 +92,7 @@ PlatformUpdateAcpiTables(VOID)
     return;
   }
 
-  mBoardProtocol->GetChipId(mBoardProtocol, &SOID);
+  mBoardProtocol->GetChipId(mBoardProtocol, (EFIChipInfoIdType *)&SOID);
   mBoardProtocol->GetChipVersion(mBoardProtocol, &SIDV);
   mBoardProtocol->GetChipFamily(mBoardProtocol, (EFIChipInfoFamilyType *)&SDFE);
   mBoardProtocol->GetModemSupport(mBoardProtocol, (EFIChipInfoModemType *)&SIDM);
