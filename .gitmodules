@@ -34,3 +34,6 @@
 	path = Platforms/CranePkg
 	url = https://github.com/Project-Aloha/CrDK
 	branch = main
+[submodule "Platforms/OpensslPkg/Library/OpensslLib/openssl"]
+	path = Platforms/OpensslPkg/Library/OpensslLib/openssl
+	url = https://github.com/openssl/openssl
