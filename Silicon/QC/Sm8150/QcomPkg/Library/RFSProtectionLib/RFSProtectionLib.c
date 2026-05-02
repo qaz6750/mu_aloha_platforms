@@ -128,8 +128,6 @@ RFSProtectSharedArea(UINT64 efsBaseAddr, UINT64 efsBaseSize)
       results
   );
 
-  FreePool(data);
-
   return Status;
 }
 
