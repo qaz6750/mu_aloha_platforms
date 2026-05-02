@@ -13,7 +13,7 @@ gAndromedaPkgTokenSpaceGuid.PcdSmbiosBoardModel|"XiaoMi 9"
 gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"Cepheus"
 gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|"MP"
 
-gAndromedaPkgTokenSpaceGuid.PcdABLProduct|"Xiaomi 9"
+gAndromedaPkgTokenSpaceGuid.PcdABLProduct|"cepheus"
 
 # Storage
 gAndromedaPkgTokenSpaceGuid.PcdStorageHasUFS3|0
