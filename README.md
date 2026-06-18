@@ -280,9 +280,9 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 | Device                               | Target name            | DSDT Support    | Maintainers                                        |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
 | Qualcomm Technologies, Inc. QRD 8550 | qcom-qrd8550           | ❌              | None                                               |
+| Qualcomm Technologies, Inc. MTP 8550 | qcom-mtp8550           | ❌              | None                                               |
 
 #### AYANEO Devices
-
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
 | AYANEO Pocket S                      | ayaneo-aps             | ❌              | None                                               |
@@ -308,8 +308,6 @@ sudo docker run -v $(pwd):/build/ -it mu:v1
 
 | Device                               | Target name            | DSDT Support    | Contributors                                       |
 |--------------------------------------|------------------------|-----------------|----------------------------------------------------|
-| Xiaomi 13                            | xiaomi-fuxi            | ❌              | None                                               |
-| Xiaomi 13 Pro                        | xiaomi-nuwa            | ❌              | None                                               |
 | Xiaomi Pad6 S Pro                    | xiaomi-sheng           | ❌              | None                                               |
 | Xiaomi K60 Pro                       | xiaomi-socrates        | ❌              | None                                               |
 

@@ -1,0 +1,12 @@
+[PcdsFixedAtBuild.common]
+gAndromedaPkgTokenSpaceGuid.PcdMipiFrameBufferWidth|1440
+gAndromedaPkgTokenSpaceGuid.PcdMipiFrameBufferHeight|3120
+
+# Smbios Info
+gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemBrand|"LG Electronics"
+gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemModel|"V50 ThinQ"
+gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"flash"
+gAndromedaPkgTokenSpaceGuid.PcdSmbiosSystemRetailSku|"LM-V500"
+
+gAndromedaPkgTokenSpaceGuid.PcdABLProduct|"flash"
+
